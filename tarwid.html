@@ -774,6 +774,101 @@
       text-decoration: none;
     }
     .btn-wa:hover { background: #1EBE5D; }
+  
+    /* ─── SLIDE-OVER DRAWER POUR LE DOSSIER CLINIQUE ─── */
+    #modalDossierClinique {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(3px);
+      z-index: 9999;
+      display: none;
+      justify-content: flex-end;
+      align-items: stretch;
+    }
+    #modalDossierClinique.modal-active {
+      display: flex !important;
+    }
+    #modalDossierClinique .modal-window {
+      width: 100%;
+      max-width: 580px;
+      height: 100vh;
+      max-height: 100vh;
+      margin: 0;
+      border-radius: 18px 0 0 18px;
+      box-shadow: -10px 0 35px rgba(15, 23, 42, 0.2);
+      display: flex;
+      flex-direction: column;
+      animation: slideOverRight 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      background: #FFFFFF;
+      overflow: hidden;
+      border: 1px solid #E2E8F0;
+    }
+    @keyframes slideOverRight {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
+    }
+    #modalDossierClinique .modal-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+    }
+
+    /* ─── SUB-NAVIGATION HORIZONTALE PAR PILLS (ONGLETS DE NIVEAU 2) ─── */
+    .pole-subnav-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      margin-bottom: 18px;
+      overflow-x: auto;
+      box-shadow: var(--shadow-sm);
+    }
+    .pole-subnav-btn {
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: #64748B;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+    .pole-subnav-btn:hover {
+      background: #F1F5F9;
+      color: #0F172A;
+    }
+    .pole-subnav-btn.active-subnav {
+      background: #0D9488;
+      color: #FFFFFF;
+      font-weight: 700;
+      box-shadow: 0 1px 3px rgba(13, 148, 136, 0.3);
+    }
+
+    /* ─── SPOTLIGHT DROPDOWN ITEM ─── */
+    .spotlight-item {
+      padding: 10px 12px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.15s;
+      border-bottom: 1px solid #F1F5F9;
+    }
+    .spotlight-item:last-child { border-bottom: none; }
+    .spotlight-item:hover {
+      background: #F0FDFA;
+    }
+
   </style>
 </head>
 <body>
@@ -889,37 +984,53 @@
   <!-- ─── ESPACE DE TRAVAIL PRINCIPAL ─── -->
   <main class="app-main">
     <!-- Barre Supérieure -->
-    <header class="app-header">
-      <div class="header-breadcrumb">
-        <span>TARWIDPRO 360</span>
-        <span>›</span>
-        <span>Kinésithérapie &amp; Soins</span>
-        <span>›</span>
-        <strong id="breadcrumb-current">Tableau de Bord Thérapeutique</strong>
+    <header class="app-header" style="display:flex; justify-content:space-between; align-items:center; gap:16px; padding:10px 24px;">
+      <div style="display:flex; align-items:center; gap:14px; flex:1; max-width:680px;">
+        <div class="header-breadcrumb" style="display:none;">
+          <strong id="breadcrumb-current" style="color:#0D9488;">Tableau de Bord Thérapeutique</strong>
+        </div>
+
+        <!-- Spotlight Search Universel (Ctrl+K) -->
+        <div style="position:relative; flex:1;">
+          <div style="display:flex; align-items:center; background:#F8FAFC; border:1px solid #CBD5E1; border-radius:10px; padding:6px 12px; gap:8px; box-shadow:inset 0 1px 2px rgba(0,0,0,0.03);">
+            <span style="font-size:13px; color:#0D9488;">🔍</span>
+            <input type="text" id="globalSpotlightInput" placeholder="Rechercher un patient (Nom, CIN, Tél...) • [Ctrl + K]" oninput="handleSpotlightSearch(this.value)" style="border:none; background:transparent; outline:none; font-size:12.5px; width:100%; color:#0F172A; font-weight:500;">
+            <kbd style="background:#E2E8F0; border:1px solid #CBD5E1; border-radius:4px; padding:1px 5px; font-size:10px; color:#64748B; font-weight:700;">Ctrl+K</kbd>
+          </div>
+
+          <!-- Dropdown Flottant des Résultats Spotlight -->
+          <div id="spotlightDropdown" style="display:none; position:absolute; top:calc(100% + 6px); left:0; right:0; background:#FFFFFF; border:1px solid #CBD5E1; border-radius:10px; box-shadow:0 12px 30px -5px rgba(15,23,42,0.18); z-index:9999; max-height:360px; overflow-y:auto; padding:6px;">
+          </div>
+        </div>
       </div>
 
-      <div class="header-actions">
-        <!-- Bascule Langue -->
+      <div class="header-actions" style="display:flex; align-items:center; gap:8px;">
         <button class="btn-lang" id="langSwitchBtn" onclick="toggleLanguage()">
-          🇲🇦 النسخة العربية
+          🇲🇦 العربية
         </button>
 
-        <!-- Scanner QR Rapide -->
-        <button class="btn-action btn-action-outline" onclick="ouvrirModalScannerQR()">
-          <span>📷</span>
-          <span class="nav-lbl" data-fr="Scanner QR Patient" data-ar="مسح بطاقة المريض">Scanner QR Patient</span>
+        <button class="btn-action btn-action-outline" onclick="ouvrirModalScannerQR()" style="padding:6px 12px; font-size:11.5px;">
+          <span>📷</span> <span>Scanner QR</span>
         </button>
 
-        <!-- Nouveau Rendez-vous / Encaissement -->
-        <button class="btn-action btn-action-primary" onclick="ouvrirModalNouvelleSeance()">
-          <span>➕</span>
-          <span class="nav-lbl" data-fr="Nouvelle Séance / Vente" data-ar="تسجيل حصة جديدة">Nouvelle Séance / Vente</span>
+        <button class="btn-action btn-action-outline" onclick="ouvrirModalNouveauPatient()" style="padding:6px 12px; font-size:11.5px;">
+          <span>➕</span> <span>Nouveau Patient</span>
+        </button>
+
+        <button class="btn-action btn-action-primary" onclick="ouvrirModalNouvelleSeance()" style="padding:6px 14px; font-size:11.5px;">
+          <span>⚡</span> <span>Pointer Séance</span>
         </button>
       </div>
     </header>
 
     <!-- Zone Déroulante de Contenu -->
     <div class="app-content">
+
+      <!-- Barre de Sous-Navigation Horizontale Élégante (Pills) -->
+      <div id="poleSubnavBar" class="pole-subnav-bar">
+        <!-- Rendu dynamique par updateSubnavPills() -->
+      </div>
+
 
       <!-- ═══════════════════════════════════════════════════════════ -->
       <!-- SECTION 1 : COCKPIT STRATÉGIQUE (TABLEAU DE BORD) -->
@@ -3540,6 +3651,7 @@
         console.error('Erreur sauvegarde storage', e);
       }
       renderAllViews();
+    updateSubnavPills("cockpit");
     }
 
     // ─── 2. SYSTÈME DE NOTIFICATIONS TOAST RÉELLES (ZÉRO ALERT()) ───
@@ -3592,6 +3704,157 @@
     }
 
     // ─── 3. NAVIGATION & BILINGUISME ───
+    
+    // ─── RECHERCHE UNIVERSELLE SPOTLIGHT (CTRL + K) ───
+    function handleSpotlightSearch(query) {
+      const dropdown = document.getElementById('spotlightDropdown');
+      if (!dropdown) return;
+
+      const q = (query || '').trim().toLowerCase();
+      if (!q) {
+        dropdown.style.display = 'none';
+        dropdown.innerHTML = '';
+        return;
+      }
+
+      const matches = CRM_STORE.patients.filter(p => 
+        p.nom.toLowerCase().includes(q) ||
+        p.cin.toLowerCase().includes(q) ||
+        p.tel.toLowerCase().includes(q) ||
+        p.id.toLowerCase().includes(q) ||
+        p.pathologie.toLowerCase().includes(q)
+      );
+
+      if (matches.length === 0) {
+        dropdown.innerHTML = '<div style="padding:14px; text-align:center; color:#94A3B8; font-size:12px;">Aucun patient trouvé pour "<strong>' + q + '</strong>"</div>';
+        dropdown.style.display = 'block';
+        return;
+      }
+
+      let html = '';
+      matches.slice(0, 6).forEach(p => {
+        const pct = Math.round((p.seancesFaites / p.seancesTotal) * 100);
+        html += `
+          <div class="spotlight-item" onclick="ouvrirDossierClinique('${p.id}'); document.getElementById('spotlightDropdown').style.display='none';">
+            <div>
+              <div style="font-weight:700; color:#0F172A; font-size:13px; display:flex; align-items:center; gap:6px;">
+                <span>${p.nom}</span>
+                <span style="font-size:10.5px; font-weight:600; background:#F1F5F9; color:#475569; padding:1px 6px; border-radius:4px;">${p.cin}</span>
+                ${p.krediat > 0 ? '<span style="font-size:10px; font-weight:700; background:#FEF2F2; color:#DC2626; padding:1px 6px; border-radius:4px;">Dette: ' + p.krediat + ' DH</span>' : ''}
+              </div>
+              <div style="font-size:11px; color:#64748B; margin-top:2px;">
+                ${p.pathologie} • <strong>${p.seancesFaites}/${p.seancesTotal} séances (${pct}%)</strong> • Tél: ${p.tel}
+              </div>
+            </div>
+            <div style="display:flex; gap:6px;" onclick="event.stopPropagation();">
+              <button class="btn-action btn-action-accent" style="padding:4px 8px; font-size:11px;" onclick="pointerSeanceDirecte('${p.id}'); document.getElementById('spotlightDropdown').style.display='none';">
+                ⚡ Pointer
+              </button>
+              <button class="btn-action btn-action-outline" style="padding:4px 8px; font-size:11px;" onclick="ouvrirDossierClinique('${p.id}'); document.getElementById('spotlightDropdown').style.display='none';">
+                📋 Dossier
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      dropdown.innerHTML = html;
+      dropdown.style.display = 'block';
+    }
+
+    // Raccourci clavier universel Ctrl + K ou Cmd + K
+    if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        const input = document.getElementById('globalSpotlightInput');
+        if (input) {
+          input.focus();
+          input.select();
+        }
+      }
+      if (e.key === 'Escape') {
+        const dropdown = document.getElementById('spotlightDropdown');
+        if (dropdown) dropdown.style.display = 'none';
+      }
+    });
+
+    // Fermer spotlight si clic extérieur
+    if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') window.addEventListener('click', (e) => {
+      if (!e.target.closest('#globalSpotlightInput') && !e.target.closest('#spotlightDropdown')) {
+        const dropdown = document.getElementById('spotlightDropdown');
+        if (dropdown) dropdown.style.display = 'none';
+      }
+    });
+
+    // ─── ARCHITECTURE DE NAVIGATION EN 4 PÔLES & ONGLETS HORIZONTAUX ───
+    const POLES_CONFIG = {
+      'soins': {
+        name: '🩺 Soins & Patients',
+        views: [
+          { id: 'cockpit', label: '📊 Tableau de Bord', icon: '📊' },
+          { id: 'cabines', label: '🚪 Cabines de Soin', icon: '🚪' },
+          { id: 'patients', label: '👥 Dossiers Patients', icon: '👥' },
+          { id: 'seances', label: '⏱️ Pointages Présences', icon: '⏱️' },
+          { id: 'radar-moteur', label: '🎯 Évolution Motrice (EVA)', icon: '🎯' },
+          { id: 'badges-qr', label: '🪪 Cartes QR Code', icon: '🪪' }
+        ]
+      },
+      'caisse': {
+        name: '🧾 Caisse & Forfaits',
+        views: [
+          { id: 'caisse-forfaits', label: '💳 Caisse POS & Carnet Krediat', icon: '💳' }
+        ]
+      },
+      'compta': {
+        name: '⚖️ Comptabilité (CGNC)',
+        views: [
+          { id: 'comptabilite-kine', label: '⚖️ Vue Générale CGNC', icon: '⚖️' },
+          { id: 'journal-ecritures', label: '📖 Journal des Écritures', icon: '📖' },
+          { id: 'grand-livre', label: '📑 Grand-Livre & Balance', icon: '📑' },
+          { id: 'bilan-cpc', label: '📊 Bilan & CPC', icon: '📊' }
+        ]
+      },
+      'logistique': {
+        name: '📦 Logistique & Documents',
+        views: [
+          { id: 'stocks-kine', label: '🧴 Stocks Consommables', icon: '🧴' },
+          { id: 'bilans-recus', label: '📄 Reçus Mutuelle CNOPS/CNSS', icon: '📄' },
+          { id: 'cndp-sante', label: '🔒 Secret Médical & CNDP', icon: '🔒' }
+        ]
+      }
+    };
+
+    let activePoleKey = 'soins';
+
+    function getPoleForView(viewId) {
+      for (const [key, pole] of Object.entries(POLES_CONFIG)) {
+        if (pole.views.some(v => v.id === viewId)) return key;
+      }
+      return 'soins';
+    }
+
+    function updateSubnavPills(activeViewId) {
+      const container = document.getElementById('poleSubnavBar');
+      if (!container) return;
+
+      activePoleKey = getPoleForView(activeViewId);
+      const pole = POLES_CONFIG[activePoleKey];
+      if (!pole) return;
+
+      let pillsHtml = '';
+      pole.views.forEach(v => {
+        const isActive = v.id === activeViewId;
+        pillsHtml += `
+          <button class="pole-subnav-btn ${isActive ? 'active-subnav' : ''}" onclick="navTo('${v.id}')">
+            <span>${v.icon}</span>
+            <span>${v.label}</span>
+          </button>
+        `;
+      });
+
+      container.innerHTML = pillsHtml;
+    }
+
     function navTo(sectionId, btn) {
       document.querySelectorAll('.menu-item-btn').forEach(b => b.classList.remove('active'));
       if (btn) btn.classList.add('active');
@@ -3599,6 +3862,9 @@
       document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active-section'));
       const target = document.getElementById('view-' + sectionId);
       if (target) target.classList.add('active-section');
+
+      // Actualiser les pills de sous-navigation horizontale
+      updateSubnavPills(sectionId);
 
       const titles = {
         'cockpit': isArabic ? 'لوحة القيادة العلاجية' : 'Tableau de Bord Thérapeutique',
@@ -5232,6 +5498,8 @@
     window.showToast = showToast;
     window.loadStore = loadStore;
     window.saveStore = saveStore;
+    window.handleSpotlightSearch = handleSpotlightSearch;
+    window.updateSubnavPills = updateSubnavPills;
     window.renderAllViews = renderAllViews;
     window.renderBalanceView = renderBalanceView;
     window.renderGrandLivreView = renderGrandLivreView;
