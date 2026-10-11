@@ -6103,9 +6103,26 @@ Au plaisir de veiller sur votre confort et votre mobilité !`;
       };
 
       CRM_STORE.patients.unshift(newPatient);
+
+      // Écriture comptable automatique (CGNC) pour encaissement du forfait patient
+      if (newPatient.paye > 0) {
+        CRM_STORE.journal.unshift({
+          id: 'ECR-' + String(CRM_STORE.journal.length + 1).padStart(2, '0'),
+          date: new Date().toLocaleDateString('fr-FR'),
+          codeJnl: 'CA',
+          numPiece: 'REC-' + (1050 + CRM_STORE.journal.length),
+          cptDeb: '5161',
+          nomDeb: 'Caisse Centrale Cabinet',
+          cptCred: '7124',
+          nomCred: 'Honoraires Kinésithérapie & Soins',
+          libelle: 'Souscription ' + newPatient.forfaitNom + ' (' + nom + ')',
+          montant: newPatient.paye
+        });
+      }
+
       saveStore();
       fermerModal('modalNouveauPatient');
-      showToast('✓ Fiche patient de ' + nom + ' créée avec succès !', 'success');
+      showToast('✓ Fiche patient de ' + nom + ' créée ! Écriture comptable automatique de ' + newPatient.paye + ' DH passée au Journal CGNC.', 'success');
       if (e && e.target && typeof e.target.reset === "function") e.target.reset();
     }
 
@@ -6788,7 +6805,21 @@ Au plaisir de veiller sur votre confort et votre mobilité !`;
 
       if (type === 'entree') {
         art.qte = Math.round((art.qte + qte) * 10) / 10;
-        showToast('📦 + ' + qte + ' ' + art.unite + ' ajoutés au stock de ' + art.nom, 'success');
+        const coutEstime = Math.round(qte * (art.prixUnitaire || (art.unite.includes('Litre') ? 290 : 85)));
+        // Écriture comptable automatique (CGNC) pour achat de consommables (Journal Achats AC)
+        CRM_STORE.journal.unshift({
+          id: 'ECR-' + String(CRM_STORE.journal.length + 1).padStart(2, '0'),
+          date: new Date().toLocaleDateString('fr-FR'),
+          codeJnl: 'AC',
+          numPiece: 'FAC-' + (920 + CRM_STORE.journal.length),
+          cptDeb: '6122',
+          nomDeb: 'Achats Consommables Huiles & Matériel',
+          cptCred: '5161',
+          nomCred: 'Caisse Centrale Cabinet',
+          libelle: 'Réapprovisionnement Stock ' + art.nom + ' (' + qte + ' ' + art.unite + ')',
+          montant: coutEstime
+        });
+        showToast(`📦 + ${qte} ${art.unite} de ${art.nom} ajoutés ! Achat de ${coutEstime} DH enregistré au Journal CGNC.`, 'success');
       } else {
         art.qte = Math.round((art.qte - qte) * 10) / 10;
         showToast('📦 - ' + qte + ' ' + art.unite + ' décomptés du stock de ' + art.nom, 'info');
