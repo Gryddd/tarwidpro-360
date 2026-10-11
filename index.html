@@ -3483,6 +3483,25 @@
           // Safety check: ensure all sub-arrays exist
           if (!CRM_STORE.patients || !CRM_STORE.cabines || !CRM_STORE.journal || !CRM_STORE.stocks) {
             CRM_STORE = JSON.parse(JSON.stringify(DEFAULT_STORE));
+          } else {
+            // Migration automatique vers le nom officiel du médecin chef : Dr. LAATIRIS
+            CRM_STORE.patients.forEach(p => {
+              if (p.praticien && (p.praticien.includes('Amrani') || p.praticien.includes('Karim'))) {
+                p.praticien = 'Dr. LAATIRIS';
+              }
+              if (p.notes) {
+                p.notes.forEach(n => {
+                  if (n.auteur && (n.auteur.includes('Amrani') || n.auteur.includes('Karim'))) {
+                    n.auteur = 'Dr. LAATIRIS';
+                  }
+                });
+              }
+            });
+            CRM_STORE.cabines.forEach(c => {
+              if (c.praticien && (c.praticien.includes('Amrani') || c.praticien.includes('Karim'))) {
+                c.praticien = 'Dr. LAATIRIS';
+              }
+            });
           }
         } else {
           CRM_STORE = JSON.parse(JSON.stringify(DEFAULT_STORE));
