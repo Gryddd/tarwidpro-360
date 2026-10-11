@@ -2072,12 +2072,15 @@
                     2. Destinataire :
                   </label>
                   <!-- Sélecteur d'onglets pour le mode destinataire -->
-                  <div style="display:flex; background:#E2E8F0; border-radius:6px; padding:2px;">
+                  <div style="display:flex; background:#E2E8F0; border-radius:6px; padding:2px; gap:2px;">
                     <button id="btnTabCarnet" type="button" onclick="basculerModeDestinataire('carnet')" style="border:none; background:#FFFFFF; color:#0F172A; font-weight:700; font-size:11px; padding:3px 8px; border-radius:4px; cursor:pointer;">
-                      👥 Carnet Patients
+                      👥 1 Patient
                     </button>
                     <button id="btnTabNouveauNum" type="button" onclick="basculerModeDestinataire('nouveau')" style="border:none; background:transparent; color:#64748B; font-weight:700; font-size:11px; padding:3px 8px; border-radius:4px; cursor:pointer;">
-                      ➕ Nouveau Numéro
+                      ➕ 1 Numéro
+                    </button>
+                    <button id="btnTabTousContacts" type="button" onclick="basculerModeDestinataire('tous')" style="border:none; background:transparent; color:#059669; font-weight:800; font-size:11px; padding:3px 8px; border-radius:4px; cursor:pointer;">
+                      📢 TOUS les Contacts
                     </button>
                   </div>
                 </div>
@@ -2110,6 +2113,21 @@
                     <span>Enregistrer ce numéro dans le carnet d'adresses (prospects)</span>
                   </label>
                 </div>
+                <!-- Mode C : Diffusion à TOUS les contacts (Demandé par l'utilisateur) -->
+                <div id="panneauDestinataireTous" style="display:none; background:#F0FDF4; border:1px solid #BBF7D0; border-radius:8px; padding:12px;">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <div>
+                      <strong style="color:#065F46; font-size:12px;">📢 Campagne Globale : Tous les Contacts</strong>
+                      <div style="font-size:11px; color:#166534;" id="lblCompteurTousContacts">7 contacts répertoriés (Patients + Prospects)</div>
+                    </div>
+                    <button type="button" class="btn-action" style="padding:5px 10px; font-size:11.5px; background:#059669; color:#FFFFFF; border:none; font-weight:700;" onclick="ouvrirModalDiffusionGlobale()">
+                      ⚙️ Gérer la Campagne
+                    </button>
+                  </div>
+                  <div style="font-size:11px; color:#475569; line-height:1.4;">
+                    L'offre sera personnalisée automatiquement au nom de chaque client avec la signature officielle du <strong>Dr. Hamza LAATIRIS</strong>.
+                  </div>
+                </div>
               </div>
 
               <!-- Étape 3 : Message Personnalisé & Note Complémentaire -->
@@ -2141,8 +2159,8 @@
 
               <!-- Étape 5 : Actions d'Envoi WhatsApp -->
               <div style="display:flex; gap:10px;">
-                <button class="btn-action" style="flex:2; background:#25D366; color:#FFFFFF; font-weight:800; font-size:13px; padding:11px 16px; justify-content:center; border:none; box-shadow:0 2px 8px rgba(37,211,102,0.3);" onclick="envoyerOffreWhatsApp()">
-                  <span>💬 Envoyer par WhatsApp (1-Clic)</span>
+                <button id="btnPrincipalEnvoiWhatsApp" class="btn-action" style="flex:2; background:#25D366; color:#FFFFFF; font-weight:800; font-size:13px; padding:11px 16px; justify-content:center; border:none; box-shadow:0 2px 8px rgba(37,211,102,0.3);" onclick="executerEnvoiWhatsAppSelonMode()">
+                  <span id="lblBtnPrincipalEnvoi">💬 Envoyer par WhatsApp (1-Clic)</span>
                 </button>
                 <button class="btn-action btn-action-outline" style="flex:1; justify-content:center; font-size:12px; padding:11px;" onclick="copierMessageWhatsApp()">
                   <span>📋 Copier Texte</span>
@@ -4303,6 +4321,97 @@
     </div>
   </div>
 
+  
+  <!-- ─── MODALE DIFFUSION GROUPÉE WHATSAPP (TOUS LES CONTACTS) ─── -->
+  <div class="modal-backdrop" id="modalDiffusionGlobale">
+    <div class="modal-window" style="max-width:680px;">
+      <div class="modal-header" style="background:#059669; color:#FFFFFF;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:18px;">📢</span>
+          <h4 style="margin:0; font-size:15px; color:#FFFFFF;">Diffusion Groupée WhatsApp à TOUS les Contacts</h4>
+        </div>
+        <button class="modal-close-btn" style="color:#FFFFFF;" onclick="fermerModal('modalDiffusionGlobale')">✕</button>
+      </div>
+
+      <div class="modal-body" style="padding:18px;">
+        <!-- Résumé Offre Sélectionnée -->
+        <div style="background:#F0FDF4; border:1px solid #BBF7D0; border-radius:8px; padding:12px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <div>
+            <div style="font-size:11px; color:#166534; font-weight:700; text-transform:uppercase;">Offre en cours de diffusion :</div>
+            <div style="font-size:14px; font-weight:800; color:#065F46;" id="diffusionModalOffreTitre">Pack Dos &amp; Cervicales</div>
+            <div style="font-size:11px; color:#475569;" id="diffusionModalOffreTarif">890 DH au lieu de 1250 DH (-29%)</div>
+          </div>
+          <div style="text-align:right;">
+            <span class="badge-status wait" style="background:#25D366; color:#FFFFFF; font-weight:700; font-size:11.5px;">Dr. Hamza LAATIRIS</span>
+          </div>
+        </div>
+
+        <!-- Barre de Progression -->
+        <div style="margin-bottom:14px;">
+          <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:700; color:#334155; margin-bottom:5px;">
+            <span id="lblProgressionDiffusion">Progression : 0 / 7 contacts envoyés (0%)</span>
+            <span id="lblStatutCampagneGlobal" style="color:#059669;">Prête</span>
+          </div>
+          <div style="background:#E2E8F0; border-radius:8px; height:10px; overflow:hidden;">
+            <div id="barreProgressionDiffusion" style="background:linear-gradient(90deg, #10B981, #059669); height:100%; width:0%; transition:width 0.3s ease;"></div>
+          </div>
+        </div>
+
+        <!-- Contrôles de Sélection & Filtres -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; font-size:12px;">
+          <div style="display:flex; gap:10px; align-items:center;">
+            <label style="display:flex; align-items:center; gap:5px; font-weight:700; color:#334155; cursor:pointer;">
+              <input id="chkSelectTousDiffusion" type="checkbox" checked style="accent-color:#059669;" onchange="toggleToutSelectionnerDiffusion(this.checked)">
+              <span>Tout Sélectionner (<span id="nbTotalContactsSelectionnes">7</span>)</span>
+            </label>
+          </div>
+
+          <div style="display:flex; gap:6px;">
+            <button class="btn-action btn-action-outline" style="padding:4px 8px; font-size:11px;" onclick="copierTousLesLiensWhatsApp()">
+              📋 Copier Tous les Liens
+            </button>
+            <button class="btn-action btn-action-outline" style="padding:4px 8px; font-size:11px;" onclick="reinitialiserStatutsCampagne()">
+              🔄 Réinitialiser
+            </button>
+          </div>
+        </div>
+
+        <!-- Liste des Contacts avec État d'Envoi -->
+        <div style="max-height:240px; overflow-y:auto; border:1px solid #E2E8F0; border-radius:8px; margin-bottom:16px;">
+          <table style="width:100%; border-collapse:collapse; font-size:12px;">
+            <thead style="background:#F8FAFC; position:sticky; top:0; border-bottom:1px solid #CBD5E1;">
+              <tr>
+                <th style="padding:8px 10px; text-align:left; width:30px;">✓</th>
+                <th style="padding:8px 10px; text-align:left;">Destinataire</th>
+                <th style="padding:8px 10px; text-align:left;">Téléphone</th>
+                <th style="padding:8px 10px; text-align:center;">Type</th>
+                <th style="padding:8px 10px; text-align:center;">Statut</th>
+                <th style="padding:8px 10px; text-align:right;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyDiffusionTousContacts">
+              <!-- Rendu dynamique par JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Bouton de Démarrage / Suivant -->
+        <div style="display:flex; gap:10px; justify-content:space-between; align-items:center; background:#F8FAFC; padding:12px; border-radius:8px; border:1px solid #E2E8F0;">
+          <div style="font-size:11.5px; color:#475569;">
+            💡 <em>L'assistant ouvre WhatsApp pour chaque contact l'un après l'autre avec son message personnalisé.</em>
+          </div>
+
+          <div style="display:flex; gap:8px;">
+            <button type="button" class="btn-action btn-action-outline" onclick="fermerModal('modalDiffusionGlobale')">Fermer</button>
+            <button id="btnDemarrerCampagnePasAPas" type="button" class="btn-action" style="background:#25D366; color:#FFFFFF; font-weight:800; font-size:12.5px; padding:9px 16px; border:none; box-shadow:0 2px 6px rgba(37,211,102,0.3);" onclick="avancerCampagneDiffusionPasAPas()">
+              ▶️ Démarrer l'Envoi 1-Clic
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Conteneur Toast Notifications Flottant -->
   <div id="toastContainer" style="position:fixed; top:20px; right:20px; z-index:99999; display:flex; flex-direction:column; gap:10px; pointer-events:none;"></div>
 
@@ -5038,8 +5147,11 @@
                     <button class="btn-action btn-action-outline" style="padding:4px 8px; font-size:11px;" onclick="ouvrirModalNouvellePromo('${p.id}')">
                       ✏️ Modifier
                     </button>
+                    <button class="btn-action" style="background:#0D9488; color:#FFFFFF; font-weight:700; padding:4px 8px; font-size:11px; border:none;" onclick="lancerDiffusionTousPourPromo('${p.id}')">
+                      📢 Diffuser à Tous
+                    </button>
                     <button class="btn-action" style="background:#25D366; color:#FFFFFF; font-weight:700; padding:4px 10px; font-size:11px; border:none; box-shadow:0 1px 3px rgba(37,211,102,0.3);" onclick="selectionnerPromoPourEnvoi('${p.id}')">
-                      💬 Diffuser WhatsApp
+                      💬 1 Patient
                     </button>
                   </div>
                 </div>
@@ -5112,26 +5224,318 @@
       renderPromosView();
     }
 
+    
+    // ─── GESTION DE LA DIFFUSION GROUPÉE WHATSAPP (TOUS LES CONTACTS) ───
+    let campagneContactsEtat = []; // Tableau d'état des contacts pour la campagne en cours
+    let indexContactCampagneEnCours = 0;
+
+    function getTousLesContactsCarnet() {
+      const contacts = [];
+      if (CRM_STORE.patients) {
+        CRM_STORE.patients.forEach(p => {
+          if (p.tel) {
+            contacts.push({
+              id: p.id,
+              nom: p.nom,
+              tel: p.tel,
+              type: 'Patient',
+              selectionne: true,
+              statut: 'en_attente'
+            });
+          }
+        });
+      }
+      if (CRM_STORE.contactsExternes) {
+        CRM_STORE.contactsExternes.forEach(c => {
+          if (c.tel) {
+            contacts.push({
+              id: c.id,
+              nom: c.nom,
+              tel: c.tel,
+              type: 'Prospect',
+              selectionne: true,
+              statut: 'en_attente'
+            });
+          }
+        });
+      }
+      return contacts;
+    }
+
+    function actualiserCompteursTousContacts() {
+      const tous = getTousLesContactsCarnet();
+      const lbl = document.getElementById('lblCompteurTousContacts');
+      if (lbl) lbl.innerText = tous.length + ' contacts répertoriés (Patients & Prospects)';
+    }
+
     function basculerModeDestinataire(mode) {
       modeDestinataireWhatsAppActif = mode;
       const tabCarnet = document.getElementById('btnTabCarnet');
       const tabNouveau = document.getElementById('btnTabNouveauNum');
+      const tabTous = document.getElementById('btnTabTousContacts');
       const panneauCarnet = document.getElementById('panneauDestinataireCarnet');
       const panneauNouveau = document.getElementById('panneauDestinataireNouveau');
+      const panneauTous = document.getElementById('panneauDestinataireTous');
+      const lblBtn = document.getElementById('lblBtnPrincipalEnvoi');
+
+      // Réinitialiser les styles d'onglets
+      [tabCarnet, tabNouveau, tabTous].forEach(tab => {
+        if (tab) { tab.style.background = 'transparent'; tab.style.color = '#64748B'; }
+      });
+      [panneauCarnet, panneauNouveau, panneauTous].forEach(p => {
+        if (p) p.style.display = 'none';
+      });
 
       if (mode === 'carnet') {
         if (tabCarnet) { tabCarnet.style.background = '#FFFFFF'; tabCarnet.style.color = '#0F172A'; }
-        if (tabNouveau) { tabNouveau.style.background = 'transparent'; tabNouveau.style.color = '#64748B'; }
         if (panneauCarnet) panneauCarnet.style.display = 'block';
-        if (panneauNouveau) panneauNouveau.style.display = 'none';
-      } else {
-        if (tabCarnet) { tabCarnet.style.background = 'transparent'; tabCarnet.style.color = '#64748B'; }
+        if (lblBtn) lblBtn.innerText = '💬 Envoyer par WhatsApp (1-Clic)';
+      } else if (mode === 'nouveau') {
         if (tabNouveau) { tabNouveau.style.background = '#FFFFFF'; tabNouveau.style.color = '#0F172A'; }
-        if (panneauCarnet) panneauCarnet.style.display = 'none';
         if (panneauNouveau) panneauNouveau.style.display = 'block';
+        if (lblBtn) lblBtn.innerText = '💬 Envoyer par WhatsApp (1-Clic)';
+      } else if (mode === 'tous') {
+        if (tabTous) { tabTous.style.background = '#FFFFFF'; tabTous.style.color = '#059669'; }
+        if (panneauTous) panneauTous.style.display = 'block';
+        const total = getTousLesContactsCarnet().length;
+        if (lblBtn) lblBtn.innerText = '📢 Diffuser à TOUS les Contacts (' + total + ')';
+        actualiserCompteursTousContacts();
       }
+
       actualiserApercuWhatsApp();
     }
+
+    function executerEnvoiWhatsAppSelonMode() {
+      if (modeDestinataireWhatsAppActif === 'tous') {
+        ouvrirModalDiffusionGlobale();
+      } else {
+        envoyerOffreWhatsApp();
+      }
+    }
+
+    function lancerDiffusionTousPourPromo(promoId) {
+      selectionnerPromoPourEnvoi(promoId);
+      basculerModeDestinataire('tous');
+      ouvrirModalDiffusionGlobale(promoId);
+    }
+
+    function ouvrirModalDiffusionGlobale(promoId = null) {
+      if (promoId) {
+        const selectPromo = document.getElementById('selectPromoAEnvoyer');
+        if (selectPromo) selectPromo.value = promoId;
+      }
+
+      const selectPromo = document.getElementById('selectPromoAEnvoyer');
+      const promoIdActuel = selectPromo ? selectPromo.value : (CRM_STORE.promos[0] ? CRM_STORE.promos[0].id : null);
+      const promo = CRM_STORE.promos.find(p => p.id === promoIdActuel);
+
+      const titreEl = document.getElementById('diffusionModalOffreTitre');
+      const tarifEl = document.getElementById('diffusionModalOffreTarif');
+      if (titreEl && promo) titreEl.innerText = promo.titre;
+      if (tarifEl && promo) tarifEl.innerText = promo.prixPromo + ' DH au lieu de ' + promo.prixNormal + ' DH (' + promo.reduction + ')';
+
+      // Initialiser la liste des contacts pour la campagne
+      campagneContactsEtat = getTousLesContactsCarnet();
+      indexContactCampagneEnCours = 0;
+      renderTableauDiffusionContacts();
+      mettreAJourProgressionDiffusion();
+
+      ouvrirModal('modalDiffusionGlobale');
+    }
+
+    function renderTableauDiffusionContacts() {
+      const tbody = document.getElementById('tbodyDiffusionTousContacts');
+      if (!tbody) return;
+
+      tbody.innerHTML = campagneContactsEtat.map((c, idx) => {
+        let badgeStatut = '';
+        if (c.statut === 'envoye') {
+          badgeStatut = '<span class="badge-status cure" style="background:#ECFDF5; color:#059669; font-weight:700;">Envoyé ✓</span>';
+        } else {
+          badgeStatut = '<span class="badge-status wait" style="background:#F1F5F9; color:#64748B;">En attente ⏳</span>';
+        }
+
+        return `
+          <tr style="border-bottom:1px solid #F1F5F9; background:${c.statut === 'envoye' ? '#F0FDF4' : 'transparent'};">
+            <td style="padding:7px 10px;">
+              <input type="checkbox" ${c.selectionne ? 'checked' : ''} style="accent-color:#059669;" onchange="toggleContactSelectionDiffusion(${idx}, this.checked)">
+            </td>
+            <td style="padding:7px 10px; font-weight:700; color:#0F172A;">
+              ${c.nom}
+            </td>
+            <td style="padding:7px 10px; color:#475569; font-family:monospace;">
+              ${c.tel}
+            </td>
+            <td style="padding:7px 10px; text-align:center;">
+              <span style="font-size:10px; padding:2px 6px; border-radius:4px; background:${c.type === 'Patient' ? '#EFF6FF' : '#FEF3C7'}; color:${c.type === 'Patient' ? '#1D4ED8' : '#B45309'}; font-weight:700;">
+                ${c.type}
+              </span>
+            </td>
+            <td style="padding:7px 10px; text-align:center;" id="statut-contact-${idx}">
+              ${badgeStatut}
+            </td>
+            <td style="padding:7px 10px; text-align:right;">
+              <button class="btn-action" style="padding:2px 7px; font-size:10.5px; background:#25D366; color:#FFFFFF; border:none;" onclick="envoyerWhatsAppDirectLigneDiffusion(${idx})">
+                💬 1-Clic
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      const nbSel = campagneContactsEtat.filter(c => c.selectionne).length;
+      const nbSpan = document.getElementById('nbTotalContactsSelectionnes');
+      if (nbSpan) nbSpan.innerText = nbSel;
+    }
+
+    function toggleContactSelectionDiffusion(idx, isChecked) {
+      if (campagneContactsEtat[idx]) {
+        campagneContactsEtat[idx].selectionne = isChecked;
+        mettreAJourProgressionDiffusion();
+      }
+    }
+
+    function toggleToutSelectionnerDiffusion(coche) {
+      campagneContactsEtat.forEach(c => { c.selectionne = coche; });
+      renderTableauDiffusionContacts();
+      mettreAJourProgressionDiffusion();
+    }
+
+    function mettreAJourProgressionDiffusion() {
+      const selectionnes = campagneContactsEtat.filter(c => c.selectionne);
+      const envoyes = selectionnes.filter(c => c.statut === 'envoye');
+      const total = selectionnes.length;
+      const pct = total > 0 ? Math.round((envoyes.length / total) * 100) : 0;
+
+      const lblProg = document.getElementById('lblProgressionDiffusion');
+      if (lblProg) lblProg.innerText = 'Progression : ' + envoyes.length + ' / ' + total + ' contacts envoyés (' + pct + '%)';
+
+      const barre = document.getElementById('barreProgressionDiffusion');
+      if (barre) barre.style.width = pct + '%';
+
+      const statutEl = document.getElementById('lblStatutCampagneGlobal');
+      const btnSuivant = document.getElementById('btnDemarrerCampagnePasAPas');
+
+      if (envoyes.length === total && total > 0) {
+        if (statutEl) { statutEl.innerText = 'Terminée 🎉'; statutEl.style.color = '#059669'; }
+        if (btnSuivant) { btnSuivant.innerText = '🎉 Tous les messages sont envoyés !'; btnSuivant.style.background = '#059669'; }
+      } else {
+        const prochain = selectionnes.find(c => c.statut !== 'envoye');
+        if (statutEl) { statutEl.innerText = 'En cours...'; statutEl.style.color = '#D97706'; }
+        if (btnSuivant) {
+          btnSuivant.innerText = prochain ? ("▶️ Envoyer au suivant : " + prochain.nom) : "▶️ Démarrer l'Envoi 1-Clic";
+          btnSuivant.style.background = '#25D366';
+        }
+      }
+    }
+
+    function construireMessagePourContact(contactNom) {
+      const selectPromo = document.getElementById('selectPromoAEnvoyer');
+      const promoId = selectPromo ? selectPromo.value : null;
+      const promo = CRM_STORE.promos.find(p => p.id === promoId) || CRM_STORE.promos[0];
+      const noteInput = document.getElementById('inputNotePersoWhatsApp');
+      const notePerso = (noteInput && noteInput.value.trim()) ? "\n\n💬 *" + noteInput.value.trim() + "*" : "";
+
+      return `Bonjour ${contactNom || 'Cher(e) Patient(e)'},
+
+Le *Cabinet de Kinésithérapie & Rééducation du Dr. Hamza LAATIRIS* a le plaisir de vous faire bénéficier de notre offre exclusive :
+
+🎁 *${promo.titre}*
+💰 *Prix Spécial :* *${promo.prixPromo} DH* au lieu de ~${promo.prixNormal} DH~ (${promo.reduction})
+📋 *Détails :* ${promo.description}
+⏳ *Offre valable jusqu'au :* ${promo.validite}${notePerso}
+
+📍 *Cabinet Dr. Hamza LAATIRIS* — Taza
+📞 Pour réserver votre créneau ou pour toute information, répondez directement à ce message ou contactez notre secrétariat.
+
+Au plaisir de veiller sur votre confort et votre mobilité !`;
+    }
+
+    function envoyerWhatsAppDirectLigneDiffusion(idx) {
+      const c = campagneContactsEtat[idx];
+      if (!c) return;
+
+      const cleanTel = nettoyerNumeroMarocain(c.tel);
+      if (!cleanTel || cleanTel.length < 9) {
+        showToast("Numéro invalide pour " + c.nom, "error");
+        return;
+      }
+
+      const msg = construireMessagePourContact(c.nom);
+      const url = "https://api.whatsapp.com/send?phone=" + cleanTel + "&text=" + encodeURIComponent(msg);
+
+      // Ouvrir WhatsApp
+      if (typeof window !== 'undefined') {
+        window.open(url, '_blank');
+      }
+
+      // Marquer comme envoyé
+      c.statut = 'envoye';
+
+      // Incrémenter l'offre
+      const selectPromo = document.getElementById('selectPromoAEnvoyer');
+      const promoId = selectPromo ? selectPromo.value : null;
+      const promo = CRM_STORE.promos.find(p => p.id === promoId);
+      if (promo) promo.nbEnvoyes = (promo.nbEnvoyes || 0) + 1;
+      saveStore();
+
+      renderTableauDiffusionContacts();
+      mettreAJourProgressionDiffusion();
+      showToast("🚀 Message WhatsApp ouvert pour " + c.nom + " !", "success");
+    }
+
+    function avancerCampagneDiffusionPasAPas() {
+      const selectionnes = campagneContactsEtat.filter(c => c.selectionne);
+      const prochainIndex = campagneContactsEtat.findIndex(c => c.selectionne && c.statut !== 'envoye');
+
+      if (prochainIndex === -1) {
+        showToast("🎉 Tous les contacts sélectionnés ont déjà reçu l'offre !", "info");
+        return;
+      }
+
+      envoyerWhatsAppDirectLigneDiffusion(prochainIndex);
+    }
+
+    function reinitialiserStatutsCampagne() {
+      campagneContactsEtat.forEach(c => { c.statut = 'en_attente'; });
+      renderTableauDiffusionContacts();
+      mettreAJourProgressionDiffusion();
+      showToast("Statuts réinitialisés pour une nouvelle diffusion.", "info");
+    }
+
+    function copierTousLesLiensWhatsApp() {
+      const selectPromo = document.getElementById('selectPromoAEnvoyer');
+      const promoId = selectPromo ? selectPromo.value : null;
+      const promo = CRM_STORE.promos.find(p => p.id === promoId) || CRM_STORE.promos[0];
+
+      const selectionnes = campagneContactsEtat.filter(c => c.selectionne);
+      if (selectionnes.length === 0) {
+        showToast("Aucun contact sélectionné.", "error");
+        return;
+      }
+
+      let contenu = "📢 CAMPAGNE PROMOTIONNELLE — DR. HAMZA LAATIRIS\n";
+      contenu += "Offre : " + promo.titre + " (" + promo.prixPromo + " DH / " + promo.reduction + ")\n";
+      contenu += "--------------------------------------------------------\n\n";
+
+      selectionnes.forEach((c, i) => {
+        const cleanTel = nettoyerNumeroMarocain(c.tel);
+        const msg = construireMessagePourContact(c.nom);
+        const url = "https://api.whatsapp.com/send?phone=" + cleanTel + "&text=" + encodeURIComponent(msg);
+        contenu += (i + 1) + ". " + c.nom + " (" + c.tel + ") :\n" + url + "\n\n";
+      });
+
+      if (navigator && navigator.clipboard) {
+        navigator.clipboard.writeText(contenu).then(() => {
+          showToast("📋 " + selectionnes.length + " liens WhatsApp copiés dans le presse-papier !", "success");
+        }).catch(() => {
+          showToast("Liens copiés !", "info");
+        });
+      } else {
+        showToast("Liens générés avec succès !", "info");
+      }
+    }
+
 
     function nettoyerNumeroMarocain(telBrut) {
       if (!telBrut) return '';
@@ -7085,7 +7489,17 @@ Au plaisir de veiller sur votre confort et votre mobilité !`;
     window.loadStore = loadStore;
     window.saveStore = saveStore;
     window.handleSpotlightSearch = handleSpotlightSearch;
-    window.renderPromosView = renderPromosView;
+    window.getTousLesContactsCarnet = getTousLesContactsCarnet;
+window.ouvrirModalDiffusionGlobale = ouvrirModalDiffusionGlobale;
+window.lancerDiffusionTousPourPromo = lancerDiffusionTousPourPromo;
+window.toggleContactSelectionDiffusion = toggleContactSelectionDiffusion;
+window.toggleToutSelectionnerDiffusion = toggleToutSelectionnerDiffusion;
+window.avancerCampagneDiffusionPasAPas = avancerCampagneDiffusionPasAPas;
+window.envoyerWhatsAppDirectLigneDiffusion = envoyerWhatsAppDirectLigneDiffusion;
+window.reinitialiserStatutsCampagne = reinitialiserStatutsCampagne;
+window.copierTousLesLiensWhatsApp = copierTousLesLiensWhatsApp;
+window.executerEnvoiWhatsAppSelonMode = executerEnvoiWhatsAppSelonMode;
+window.renderPromosView = renderPromosView;
 window.filtrerPromosCategorie = filtrerPromosCategorie;
 window.basculerModeDestinataire = basculerModeDestinataire;
 window.nettoyerNumeroMarocain = nettoyerNumeroMarocain;
