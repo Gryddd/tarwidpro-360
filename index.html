@@ -9,21 +9,23 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --kine-navy: #0A192F;
-      --kine-sidebar: #0C1E38;
-      --kine-sidebar-hover: #132D54;
+      --kine-navy: #0F172A;
+      --kine-sidebar: #0F172A;
+      --kine-sidebar-hover: #1E293B;
       --kine-sidebar-active: #0D9488;
       --kine-primary: #0D9488;
       --kine-primary-dark: #0F766E;
-      --kine-accent: #059669;
+      --kine-primary-light: #14B8A6;
+      --kine-primary-soft: #F0FDFA;
+      --kine-accent: #10B981;
       --kine-accent-soft: #ECFDF5;
-      --kine-gold: #D97706;
+      --kine-gold: #F59E0B;
       --kine-gold-soft: #FFFBEB;
-      --kine-purple: #7C3AED;
-      --kine-purple-soft: #FAF5FF;
+      --kine-purple: #8B5CF6;
+      --kine-purple-soft: #F5F3FF;
       --kine-blue: #0284C7;
       --kine-blue-soft: #F0F9FF;
-      --kine-red: #DC2626;
+      --kine-red: #EF4444;
       --kine-red-soft: #FEF2F2;
       --kine-bg: #F8FAFC;
       --kine-card: #FFFFFF;
@@ -32,6 +34,8 @@
       --kine-text-main: #0F172A;
       --kine-text-muted: #475569;
       --kine-text-light: #94A3B8;
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.06);
       --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
       --shadow-sm: 0 2px 6px rgba(0,0,0,0.06);
       --shadow-md: 0 6px 16px rgba(0,0,0,0.08);
@@ -794,7 +798,8 @@
     </div>
 
     <div class="sidebar-menu">
-      <div class="menu-category-title nav-lbl" data-fr="Pilotage du Cabinet" data-ar="التدبير والتوجيه">Pilotage du Cabinet</div>
+      <!-- PÔLE 1 : SOINS & PATIENTS -->
+      <div class="menu-category-title nav-lbl" data-fr="🩺 Soins &amp; Patients" data-ar="العلاج والمرضى">🩺 Soins &amp; Patients</div>
       <button class="menu-item-btn active" onclick="navTo('cockpit', this)">
         <span>📊</span>
         <span class="nav-lbl" data-fr="Tableau de Bord Thérapeutique" data-ar="لوحة القيادة العلاجية">Tableau de Bord Thérapeutique</span>
@@ -804,8 +809,6 @@
         <span class="nav-lbl" data-fr="Cabines de Soin &amp; Tables" data-ar="قاعات وغرف التدليك">Cabines de Soin &amp; Tables</span>
         <span class="menu-badge" style="background:#ECFDF5; color:#059669;">4/4</span>
       </button>
-
-      <div class="menu-category-title nav-lbl" data-fr="Patients &amp; Prise en Charge" data-ar="المرضى وحصص العلاج">Patients &amp; Prise en Charge</div>
       <button class="menu-item-btn" onclick="navTo('patients', this)">
         <span>👥</span>
         <span class="nav-lbl" data-fr="Dossiers Patients &amp; Bilans" data-ar="ملفات المرضى والفحوصات">Dossiers Patients &amp; Bilans</span>
@@ -819,33 +822,25 @@
       <button class="menu-item-btn" onclick="navTo('radar-moteur', this)">
         <span>🎯</span>
         <span class="nav-lbl" data-fr="Évolution Motrice (Score EVA)" data-ar="تقييم الحركية وتراجع الألم">Évolution Motrice (Score EVA)</span>
-        <span class="menu-badge" style="background:#FAF5FF; color:#7C3AED;">EVA Radar</span>
       </button>
       <button class="menu-item-btn" onclick="navTo('badges-qr', this)">
         <span>🪪</span>
         <span class="nav-lbl" data-fr="Cartes Patients &amp; QR Code" data-ar="بطاقات المرضى والرمز الذكي">Cartes Patients &amp; QR Code</span>
       </button>
 
-      <div class="menu-category-title nav-lbl" data-fr="Caisse, Forfaits &amp; Stocks" data-ar="الصندوق والاشتراكات والمخزون">Caisse, Forfaits &amp; Stocks</div>
+      <!-- PÔLE 2 : CAISSE & FORFAITS -->
+      <div class="menu-category-title nav-lbl" data-fr="🧾 Caisse &amp; Forfaits" data-ar="الصندوق والاشتراكات">🧾 Caisse &amp; Forfaits</div>
       <button class="menu-item-btn" onclick="navTo('caisse-forfaits', this)">
         <span>💳</span>
-        <span class="nav-lbl" data-fr="Caisse, Forfaits &amp; Krediat" data-ar="الصندوق وباقات الحصص">Caisse, Forfaits &amp; Krediat</span>
+        <span class="nav-lbl" data-fr="Caisse Tactile &amp; Krediat" data-ar="الصندوق وباقات الحصص">Caisse Tactile &amp; Krediat</span>
         <span class="menu-badge" style="background:#ECFDF5; color:#059669;">4 650 DH</span>
       </button>
-      <button class="menu-item-btn" onclick="navTo('stocks-kine', this)">
-        <span>🧴</span>
-        <span class="nav-lbl" data-fr="Huiles, Crèmes &amp; Matériel" data-ar="زيوت التدليك والمستلزمات">Huiles, Crèmes &amp; Matériel</span>
-        <span class="menu-badge" style="background:#FFFBEB; color:#D97706;">Stock OK</span>
-      </button>
-      <button class="menu-item-btn" onclick="navTo('bilans-recus', this)">
-        <span>📄</span>
-        <span class="nav-lbl" data-fr="Reçus Mutuelle &amp; Bilans Médecin" data-ar="وصولات التأمين والتقارير">Reçus Mutuelle &amp; Bilans Médecin</span>
-      </button>
 
-      <div class="menu-category-title nav-lbl" data-fr="Comptabilité &amp; Finance (CGNC)" data-ar="المحاسبة والمالية (CGNC)">Comptabilité &amp; Finance (CGNC)</div>
+      <!-- PÔLE 3 : COMPTABILITÉ CGNC -->
+      <div class="menu-category-title nav-lbl" data-fr="⚖️ Comptabilité (CGNC)" data-ar="المحاسبة العامة (CGNC)">⚖️ Comptabilité (CGNC)</div>
       <button class="menu-item-btn" onclick="navTo('comptabilite-kine', this)">
         <span>⚖️</span>
-        <span class="nav-lbl" data-fr="Comptabilité (Partie Double)" data-ar="المحاسبة العامة وقيد المزدوج">Comptabilité (Partie Double)</span>
+        <span class="nav-lbl" data-fr="Comptabilité en Partie Double" data-ar="المحاسبة العامة وقيد المزدوج">Comptabilité en Partie Double</span>
         <span class="menu-badge" style="background:#ECFDF5; color:#059669;">CGNC</span>
       </button>
       <button class="menu-item-btn" onclick="navTo('journal-ecritures', this)">
@@ -862,7 +857,16 @@
         <span class="nav-lbl" data-fr="Bilan &amp; CPC (Actif/Passif)" data-ar="الميزانية وحساب النتائج">Bilan &amp; CPC (Actif/Passif)</span>
       </button>
 
-      <div class="menu-category-title nav-lbl" data-fr="Déontologie &amp; Confidentialité" data-ar="الأخلاقيات والسر المهني">Déontologie &amp; Confidentialité</div>
+      <!-- PÔLE 4 : LOGISTIQUE & DOCUMENTS -->
+      <div class="menu-category-title nav-lbl" data-fr="📦 Logistique &amp; Documents" data-ar="المخزون والوثائق">📦 Logistique &amp; Documents</div>
+      <button class="menu-item-btn" onclick="navTo('stocks-kine', this)">
+        <span>🧴</span>
+        <span class="nav-lbl" data-fr="Stocks Huiles &amp; Consommables" data-ar="زيوت التدليك والمستلزمات">Stocks Huiles &amp; Consommables</span>
+      </button>
+      <button class="menu-item-btn" onclick="navTo('bilans-recus', this)">
+        <span>📄</span>
+        <span class="nav-lbl" data-fr="Reçus Mutuelle CNOPS/CNSS" data-ar="وصولات التأمين والتقارير">Reçus Mutuelle CNOPS/CNSS</span>
+      </button>
       <button class="menu-item-btn" onclick="navTo('cndp-sante', this)">
         <span>🔒</span>
         <span class="nav-lbl" data-fr="Secret Médical (CNDP 09-08)" data-ar="السر الطبي وحماية المعطيات">Secret Médical (CNDP 09-08)</span>
@@ -921,21 +925,37 @@
       <!-- SECTION 1 : COCKPIT STRATÉGIQUE (TABLEAU DE BORD) -->
       <!-- ═══════════════════════════════════════════════════════════ -->
       <section id="view-cockpit" class="tab-section active-section">
-        <!-- Bannière Héros Professionnelle -->
-        <div class="hero-kine-banner">
-          <div class="banner-text">
-            <h1 class="nav-lbl" data-fr="TarwidPro 360 • Cabinet de Kinésithérapie &amp; Massothérapie" data-ar="ترويض برو 360 • مركز الترويض الطبي والتدليك">
-              TarwidPro 360 • Cabinet de Kinésithérapie &amp; Massothérapie
-            </h1>
-            <p class="nav-lbl" data-fr="Prise en charge personnalisée des rééducations motrices, traumatologies, neurologies et massothérapies bien-être avec traçabilité complète des forfaits et séances." data-ar="نظام متكامل لتتبع حصص الترويض الطبي، استعادة الحركة بعد الإصابات، والتدليك العلاجي مع تدبير دقيق للباقات والصندوق.">
-              Prise en charge personnalisée des rééducations motrices, traumatologies, neurologies et massothérapies bien-être avec traçabilité complète des forfaits et séances.
-            </p>
-            <div class="banner-badges">
-              <span class="micro-pill">🩺 Rééducation Fonctionnelle (Tarwid)</span>
-              <span class="micro-pill">💆‍♀️ Massothérapie Thérapeutique</span>
-              <span class="micro-pill">⚡ Électrothérapie &amp; Ultrasons</span>
-              <span class="micro-pill">📱 Relances Forfaits WhatsApp</span>
+        <!-- En-tête Exécutif Épuré du Dr. Hamza LAATIRIS -->
+        <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:12px; padding:18px 24px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; box-shadow:var(--shadow-sm);">
+          <div style="display:flex; align-items:center; gap:14px;">
+            <div style="width:48px; height:48px; border-radius:12px; background:#F0FDFA; border:1px solid #CCFBF1; display:flex; align-items:center; justify-content:center; font-size:24px; color:#0D9488;">
+              🩺
             </div>
+            <div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <h2 style="font-size:18px; font-weight:800; color:#0F172A; margin:0;">
+                  Dr. Hamza LAATIRIS
+                </h2>
+                <span style="background:#ECFDF5; color:#059669; border:1px solid #A7F3D0; font-size:11px; font-weight:700; padding:2px 8px; border-radius:20px;">
+                  Cabinet Ouvert ✓
+                </span>
+              </div>
+              <p style="font-size:12.5px; color:#64748B; margin:3px 0 0;">
+                Kinésithérapie • Rééducation Fonctionnelle • Massothérapie &amp; Soins Corporels
+              </p>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+            <button class="btn-action btn-action-outline" onclick="ouvrirModalScannerQR()" style="padding:8px 14px; font-size:12px;">
+              <span>📷</span> <span>Scanner QR</span>
+            </button>
+            <button class="btn-action btn-action-outline" onclick="ouvrirModalNouveauPatient()" style="padding:8px 14px; font-size:12px;">
+              <span>➕</span> <span>Nouveau Patient</span>
+            </button>
+            <button class="btn-action btn-action-primary" onclick="ouvrirModalNouvelleSeance()" style="padding:8px 16px; font-size:12px;">
+              <span>⚡</span> <span>Pointer Séance</span>
+            </button>
           </div>
         </div>
 
