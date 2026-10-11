@@ -977,6 +977,11 @@
         <span>📊</span>
         <span class="nav-lbl" data-fr="Tableau de Bord Thérapeutique" data-ar="لوحة القيادة العلاجية">Tableau de Bord Thérapeutique</span>
       </button>
+      <button class="menu-item-btn" onclick="navTo('agenda-rdv', this)">
+        <span>📅</span>
+        <span class="nav-lbl" data-fr="Agenda &amp; Rappels RDV" data-ar="المواعيد والتذكير عبر واتساب">Agenda &amp; Rappels RDV</span>
+        <span class="menu-badge" id="badgeAgendaCount" style="background:#EFF6FF; color:#0284C7; font-weight:700;">5 RDV</span>
+      </button>
       <button class="menu-item-btn" onclick="navTo('cabines', this)">
         <span>🚪</span>
         <span class="nav-lbl" data-fr="Cabines de Soin &amp; Tables" data-ar="قاعات وغرف التدليك">Cabines de Soin &amp; Tables</span>
@@ -1377,6 +1382,103 @@
       <!-- ═══════════════════════════════════════════════════════════ -->
       <!-- SECTION 1-B : CABINES DE SOIN & TABLES (TEMPS RÉEL) -->
       <!-- ═══════════════════════════════════════════════════════════ -->
+      
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <!-- SECTION AGENDA & RAPPELS DE RDV WHATSAPP (DR. HAMZA LAATIRIS) -->
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <section id="view-agenda-rdv" class="tab-section">
+        <!-- Bandeau d'En-tête et KPIs Épurés -->
+        <div class="panel-box" style="margin-bottom:20px; background:linear-gradient(135deg, #F0FDF4 0%, #FFFFFF 100%); border-left:4px solid #059669;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px;">
+            <div>
+              <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+                <span style="font-size:24px;">📅</span>
+                <h3 style="margin:0; font-size:18px; color:#0F172A; font-weight:800;">Agenda des Rendez-Vous &amp; Rappels Automatisés</h3>
+                <span class="badge-status cure" style="font-weight:700;">WhatsApp Relance J-1</span>
+              </div>
+              <p style="margin:0; font-size:13px; color:#475569; max-width:760px; line-height:1.5;">
+                Planifiez les créneaux de soins du <strong>Cabinet du Dr. Hamza LAATIRIS</strong>, relancez vos patients automatiquement par WhatsApp la veille de leur consultation pour éliminer les oublis et affectez directement les cabines de soin à l'arrivée.
+              </p>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+              <button class="btn-action" style="background:#25D366; color:#FFFFFF; font-weight:700; padding:9px 15px; border:none; box-shadow:0 2px 6px rgba(37,211,102,0.3);" onclick="ouvrirModalRappelsDemain()">
+                ⚡ Relancer Tous les RDV de Demain (J-1)
+              </button>
+              <button class="btn-action btn-action-primary" onclick="ouvrirModalNouveauRDV()" style="background:#0D9488; font-weight:700; padding:9px 15px;">
+                ➕ Nouveau Rendez-Vous
+              </button>
+            </div>
+          </div>
+
+          <!-- 3 Compteurs KPIs Épurés -->
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-top:18px; border-top:1px solid #E2E8F0; padding-top:16px;">
+            <div style="background:#FFFFFF; padding:12px 16px; border-radius:10px; border:1px solid #E2E8F0; display:flex; align-items:center; gap:14px;">
+              <div style="width:42px; height:42px; border-radius:8px; background:#EFF6FF; color:#0284C7; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:bold;">📅</div>
+              <div>
+                <div style="font-size:11.5px; color:#64748B; font-weight:600; text-transform:uppercase;">Séances Prévues</div>
+                <div id="kpiNbRdvTotal" style="font-size:20px; font-weight:800; color:#0F172A;">5 Séances</div>
+              </div>
+            </div>
+
+            <div style="background:#FFFFFF; padding:12px 16px; border-radius:10px; border:1px solid #E2E8F0; display:flex; align-items:center; gap:14px;">
+              <div style="width:42px; height:42px; border-radius:8px; background:#FEF3C7; color:#D97706; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:bold;">⏳</div>
+              <div>
+                <div style="font-size:11.5px; color:#64748B; font-weight:600; text-transform:uppercase;">À Relancer Demain</div>
+                <div id="kpiNbRdvDemain" style="font-size:20px; font-weight:800; color:#D97706;">4 Rendez-Vous</div>
+              </div>
+            </div>
+
+            <div style="background:#FFFFFF; padding:12px 16px; border-radius:10px; border:1px solid #E2E8F0; display:flex; align-items:center; gap:14px;">
+              <div style="width:42px; height:42px; border-radius:8px; background:#ECFDF5; color:#059669; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:bold;">📲</div>
+              <div>
+                <div style="font-size:11.5px; color:#64748B; font-weight:600; text-transform:uppercase;">Rappels Transmis</div>
+                <div id="kpiNbRappelsEnvoyes" style="font-size:20px; font-weight:800; color:#059669;">8 Rappelés ✓</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filtres et Tableau du Planning -->
+        <div class="panel-box">
+          <div class="panel-header" style="margin-bottom:14px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span style="font-size:18px;">🗓️</span>
+              <div>
+                <h4 style="margin:0; font-size:15px; font-weight:700;">Planning des Consultations &amp; Séances en Cabine</h4>
+                <span style="font-size:12px; color:#64748B;">Cliquez sur Rappel WhatsApp pour envoyer la confirmation en 1 clic</span>
+              </div>
+            </div>
+            <div style="display:flex; gap:6px;">
+              <button class="btn-action btn-action-outline" onclick="filtrerDateRDV('tous')" style="padding:4px 9px; font-size:11px;">Tous les RDV</button>
+              <button class="btn-action btn-action-outline" onclick="filtrerDateRDV('demain')" style="padding:4px 9px; font-size:11px; background:#EFF6FF; color:#1D4ED8; font-weight:700;">Demain (J-1)</button>
+              <button class="btn-action btn-action-outline" onclick="filtrerDateRDV('aujourdhui')" style="padding:4px 9px; font-size:11px;">Aujourd'hui</button>
+            </div>
+          </div>
+
+          <!-- Tableau des RDV -->
+          <div style="overflow-x:auto;">
+            <table class="data-table" style="width:100%; border-collapse:collapse;" id="tableAgendaRDV">
+              <thead>
+                <tr>
+                  <th>Heure</th>
+                  <th>Date</th>
+                  <th>Patient &amp; Contact</th>
+                  <th>Prestation / Acte</th>
+                  <th>Praticien</th>
+                  <th>Cabine</th>
+                  <th>Statut</th>
+                  <th style="text-align:center;">Rappel WhatsApp</th>
+                  <th style="text-align:right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyAgendaRDV">
+                <!-- Rendu par JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       <section id="view-cabines" class="tab-section">
         <div class="panel-box" style="margin-bottom:16px;">
           <div class="panel-header">
@@ -1938,6 +2040,24 @@
                 <div style="color:#94A3B8; font-style:italic; padding:8px 0; text-align:center;">Ticket vierge. Cliquez sur un soin ci-contre.</div>
               </div>
 
+              
+              <!-- ZONE CODE PROMO / OFFRES WHATSAPP RELIÉE AU PANIER -->
+              <div style="background:#FDF2F8; border:1px solid #FBCFE8; border-radius:8px; padding:10px; margin-bottom:12px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                  <span style="font-size:11.5px; font-weight:700; color:#9D174D;">🎟️ Appliquer un Code Promo WhatsApp :</span>
+                  <span style="font-size:10.5px; color:#BE185D;">Ex: DOS-26, DRAINAGE-26</span>
+                </div>
+                <div style="display:flex; gap:6px;">
+                  <input id="posCodePromoInput" type="text" class="search-input" placeholder="Code Promo..." style="flex:1; font-size:12px; padding:5px 8px; text-transform:uppercase; font-weight:bold;">
+                  <button type="button" class="btn-action" style="background:#DB2777; color:#FFFFFF; font-size:11.5px; font-weight:700; padding:5px 12px; border:none;" onclick="appliquerCodePromoCaisse()">
+                    Appliquer
+                  </button>
+                </div>
+                <div id="lblRemiseCodePromoAppliquee" style="display:none; margin-top:6px; font-size:11px; font-weight:bold; color:#059669;">
+                  ✓ Remise de <span id="valRemisePromo">0</span> DH appliquée sur le panier !
+                </div>
+              </div>
+
               <div style="display:flex; justify-content:space-between; align-items:center; font-size:13px; font-weight:900; margin-top:8px;">
                 <span>TOTAL À PAYER :</span>
                 <span id="ticketMontant" style="color:#0D9488; font-size:15px;">0 DH</span>
@@ -2064,6 +2184,21 @@
                   <!-- Rendu dynamique -->
                 </select>
               </div>
+
+              <!-- Étape 1-bis : Ciblage Intelligent par Profil de Patient -->
+              <div style="margin-bottom:12px;">
+                <label style="display:block; font-size:12px; font-weight:700; color:#334155; margin-bottom:4px;">
+                  🎯 Ciblage par Profil (Segmentation) :
+                </label>
+                <select id="selectCiblageProfilPromo" class="search-input" style="width:100%; font-size:12px; padding:6px 9px;" onchange="filtrerCarnetParProfil(this.value)">
+                  <option value="tous">🎯 Tous les Contacts du Carnet (Patients &amp; Prospects)</option>
+                  <option value="inactifs">💤 Patients Inactifs (&gt;30 jours sans séance) — Campagne Réactivation</option>
+                  <option value="kine">🩺 Patients Kinésithérapie &amp; Rééducation (Tarwid)</option>
+                  <option value="massage">💆 Patients Massothérapie &amp; Bien-être</option>
+                  <option value="prospects">➕ Nouveaux Prospects Uniquement</option>
+                </select>
+              </div>
+
 
               <!-- Étape 2 : Choix du Destinataire avec 2 modes -->
               <div style="margin-bottom:14px;">
@@ -4412,6 +4547,131 @@
     </div>
   </div>
 
+  
+  <!-- ─── MODALE NOUVEAU RENDEZ-VOUS ─── -->
+  <div class="modal-backdrop" id="modalNouveauRDV">
+    <div class="modal-window" style="max-width:540px;">
+      <div class="modal-header" style="background:#0D9488; color:#FFFFFF;">
+        <h4 style="margin:0; font-size:15px; color:#FFFFFF;">📅 Planifier un Rendez-Vous de Soin</h4>
+        <button class="modal-close-btn" style="color:#FFFFFF;" onclick="fermerModal('modalNouveauRDV')">✕</button>
+      </div>
+      <div class="modal-body" style="padding:18px;">
+        <form onsubmit="enregistrerNouveauRDVFormulaire(event)">
+          <div style="margin-bottom:12px;">
+            <label style="display:block; font-size:12px; font-weight:700; color:#334155; margin-bottom:4px;">Patient * :</label>
+            <select id="rdvPatientSelect" class="search-input" required style="width:100%; font-size:12.5px; padding:7px 10px;">
+              <!-- Peuplé par JS -->
+            </select>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+            <div>
+              <label style="display:block; font-size:12px; font-weight:700; color:#334155; margin-bottom:4px;">Date du RDV * :</label>
+              <input id="rdvDateInput" type="text" class="search-input" required placeholder="12/10/2026" style="width:100%; font-size:12px; padding:7px 10px;">
+            </div>
+            <div>
+              <label style="display:block; font-size:12px; font-weight:700; color:#334155; margin-bottom:4px;">Heure du Créneau * :</label>
+              <select id="rdvHeureSelect" class="search-input" style="width:100%; font-size:12px; padding:7px 10px;">
+                <option value="09:00">09:00</option>
+                <option value="09:45">09:45</option>
+                <option value="10:30">10:30</option>
+                <option value="11:15">11:15</option>
+                <option value="12:00">12:00</option>
+                <option value="14:30">14:30</option>
+                <option value="15:15">15:15</option>
+                <option value="16:00">16:00</option>
+                <option value="16:45">16:45</option>
+                <option value="17:30">17:30</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-bottom:12px;">
+            <label style="display:block; font-size:12px; font-weight:700; color:#334155; margin-bottom:4px;">Acte / Prestation Médicale :</label>
+            <select id="rdvActeSelect" class="search-input" style="width:100%; font-size:12px; padding:7px 10px;">
+              <option value="Tarwid Kiné &amp; Rééducation">Tarwid Kiné &amp; Rééducation Fonctionnelle</option>
+              <option value="Massage Thérapeutique Décontractant">Massage Thérapeutique Décontractant</option>
+              <option value="Drainage Lymphatique Manuel">Drainage Lymphatique Manuel</option>
+              <option value="Bilan Diagnostic Kinésithérapique (BDK)">Bilan Diagnostic Kinésithérapique (BDK)</option>
+              <option value="Traction &amp; Thérapie Manuelle Rachis">Traction &amp; Thérapie Manuelle Rachis</option>
+            </select>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px;">
+            <div>
+              <label style="display:block; font-size:12px; font-weight:700; color:#334155; margin-bottom:4px;">Praticien :</label>
+              <select id="rdvPraticienSelect" class="search-input" style="width:100%; font-size:12px; padding:7px 10px;">
+                <option value="Dr. Hamza LAATIRIS">Dr. Hamza LAATIRIS</option>
+                <option value="Mme Salma Benjelloun">Mme Salma Benjelloun (Assistante)</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block; font-size:12px; font-weight:700; color:#334155; margin-bottom:4px;">Cabine de Soin :</label>
+              <select id="rdvCabineSelect" class="search-input" style="width:100%; font-size:12px; padding:7px 10px;">
+                <option value="Cabine 1">Cabine 1 (Table Électrique Pro)</option>
+                <option value="Cabine 2">Cabine 2 (Table Bobath Rééduc)</option>
+                <option value="Cabine 3">Cabine 3 (Pressothérapie &amp; Soins)</option>
+                <option value="Cabine 4">Cabine 4 (Traction Cervico-Lombaire)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; gap:8px;">
+            <button type="button" class="btn-action btn-action-outline" onclick="fermerModal('modalNouveauRDV')">Annuler</button>
+            <button type="submit" class="btn-action btn-action-primary" style="background:#0D9488;">💾 Enregistrer le Rendez-Vous</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── MODALE RAPPELS GROUPÉS DEMAIN (J-1) WHATSAPP ─── -->
+  <div class="modal-backdrop" id="modalRappelsDemain">
+    <div class="modal-window" style="max-width:620px;">
+      <div class="modal-header" style="background:#059669; color:#FFFFFF;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:18px;">⚡</span>
+          <h4 style="margin:0; font-size:15px; color:#FFFFFF;">Rappels Automatiques des Rendez-Vous de Demain</h4>
+        </div>
+        <button class="modal-close-btn" style="color:#FFFFFF;" onclick="fermerModal('modalRappelsDemain')">✕</button>
+      </div>
+      <div class="modal-body" style="padding:18px;">
+        <div style="background:#F0FDF4; border:1px solid #BBF7D0; border-radius:8px; padding:12px; margin-bottom:14px; font-size:12.5px; color:#166534;">
+          📢 Les patients ci-dessous ont une séance prévue demain au <strong>Cabinet du Dr. Hamza LAATIRIS</strong>. Cliquez sur <strong>Démarrer les Rappels</strong> pour envoyer chaque message en 1 clic via WhatsApp.
+        </div>
+
+        <div style="max-height:260px; overflow-y:auto; border:1px solid #E2E8F0; border-radius:8px; margin-bottom:16px;">
+          <table style="width:100%; border-collapse:collapse; font-size:12px;">
+            <thead style="background:#F8FAFC; border-bottom:1px solid #CBD5E1;">
+              <tr>
+                <th style="padding:8px 10px; text-align:left;">Heure</th>
+                <th style="padding:8px 10px; text-align:left;">Patient</th>
+                <th style="padding:8px 10px; text-align:left;">Soin &amp; Cabine</th>
+                <th style="padding:8px 10px; text-align:center;">État Rappel</th>
+                <th style="padding:8px 10px; text-align:right;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyRappelsDemain">
+              <!-- Peuplé par JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; background:#F8FAFC; padding:12px; border-radius:8px;">
+          <div style="font-size:11.5px; color:#64748B;">
+            Conseils de séance (serviette + tenue) inclus dans le message.
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button type="button" class="btn-action btn-action-outline" onclick="fermerModal('modalRappelsDemain')">Fermer</button>
+            <button id="btnLancerRappelSuivantDemain" type="button" class="btn-action" style="background:#25D366; color:#FFFFFF; font-weight:800; border:none; padding:9px 15px;" onclick="avancerRappelsDemainPasAPas()">
+              ▶️ Démarrer les Rappels 1-Clic
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Conteneur Toast Notifications Flottant -->
   <div id="toastContainer" style="position:fixed; top:20px; right:20px; z-index:99999; display:flex; flex-direction:column; gap:10px; pointer-events:none;"></div>
 
@@ -4667,6 +4927,9 @@
         {
           id: "PROMO-001",
           titre: "Pack Soulagement Dos & Cervicales (5 Séances)",
+          codePromo: "DOS-26",
+          nbUtilisationsCaisse: 4,
+          caGenere: 3560,
           categorie: "Kiné & Massage Thérapeutique",
           prixNormal: 1250,
           prixPromo: 890,
@@ -4679,6 +4942,9 @@
         {
           id: "PROMO-002",
           titre: "Offre Bien-Être & Drainage Lymphatique (3 Séances)",
+          codePromo: "DRAINAGE-26",
+          nbUtilisationsCaisse: 2,
+          caGenere: 1300,
           categorie: "Massage & Récupération",
           prixNormal: 900,
           prixPromo: 650,
@@ -4700,6 +4966,13 @@
           description: "Évaluation podo-posturale et motrice personnalisée par le Dr. Hamza LAATIRIS pour toute nouvelle prise en charge.",
           nbEnvoyes: 22
         }
+      ],
+            rendezVous: [
+        { id: "RDV-101", date: "12/10/2026", heure: "09:30", duree: 45, patientId: "PAT-001", patientNom: "Karim Bennani", patientTel: "0661-294810", acte: "Tarwid Genou (LCA)", praticien: "Dr. Hamza LAATIRIS", cabine: "Cabine 1", statut: "Confirme", rappelEnvoye: false },
+        { id: "RDV-102", date: "12/10/2026", heure: "10:30", duree: 45, patientId: "PAT-002", patientNom: "Fatima Zahra Mansouri", patientTel: "0662-345678", acte: "Massage Décontractant Dos", praticien: "Mme Salma Benjelloun", cabine: "Cabine 2", statut: "En attente", rappelEnvoye: false },
+        { id: "RDV-103", date: "12/10/2026", heure: "11:30", duree: 60, patientId: "PAT-003", patientNom: "Youssef Idrissi", patientTel: "0663-998877", acte: "Rééducation Motrice Post-AVC", praticien: "Dr. Hamza LAATIRIS", cabine: "Cabine 3", statut: "Confirme", rappelEnvoye: false },
+        { id: "RDV-104", date: "12/10/2026", heure: "15:00", duree: 45, patientId: "PAT-004", patientNom: "Samira Cherkaoui", patientTel: "0664-112233", acte: "Drainage Lymphatique Membres", praticien: "Mme Salma Benjelloun", cabine: "Cabine 2", statut: "En attente", rappelEnvoye: false },
+        { id: "RDV-105", date: "12/10/2026", heure: "16:00", duree: 45, patientId: "PAT-001", patientNom: "Hassan Mansouri", patientTel: "0661-889900", acte: "Traction Rachis Lombaire", praticien: "Dr. Hamza LAATIRIS", cabine: "Cabine 1", statut: "Confirme", rappelEnvoye: false }
       ],
       contactsExternes: [
         {
@@ -4727,6 +5000,9 @@
           } else {
             if (!CRM_STORE.promos || CRM_STORE.promos.length === 0) {
               CRM_STORE.promos = JSON.parse(JSON.stringify(DEFAULT_STORE.promos));
+            }
+            if (!CRM_STORE.rendezVous) {
+              CRM_STORE.rendezVous = JSON.parse(JSON.stringify(DEFAULT_STORE.rendezVous));
             }
             if (!CRM_STORE.contactsExternes) {
               CRM_STORE.contactsExternes = JSON.parse(JSON.stringify(DEFAULT_STORE.contactsExternes));
@@ -4908,6 +5184,7 @@
         name: '🩺 Soins & Patients',
         views: [
           { id: 'cockpit', label: '📊 Tableau de Bord', icon: '📊' },
+          { id: 'agenda-rdv', label: '📅 Agenda & Rappels RDV', icon: '📅' },
           { id: 'cabines', label: '🚪 Cabines de Soin', icon: '🚪' },
           { id: 'patients', label: '👥 Dossiers Patients', icon: '👥' },
           { id: 'seances', label: '⏱️ Pointages Présences', icon: '⏱️' },
@@ -5843,6 +6120,292 @@ Au plaisir de veiller sur votre confort et votre mobilité !`;
       showToast("Offre supprimée du catalogue.", "info");
     }
 
+    
+    // ─── GESTION DE L'AGENDA DES RDV & RAPPELS AUTOMATISÉS WHATSAPP ───
+    let dateFiltreAgenda = 'tous';
+    let codePromoActifCaisse = null;
+    let montantRemiseActiveCaisse = 0;
+
+    function renderAgendaRDVView() {
+      if (!CRM_STORE.rendezVous) return;
+
+      const rdvList = CRM_STORE.rendezVous;
+      const totalRdv = rdvList.length;
+      const rdvDemain = rdvList.filter(r => r.date === "12/10/2026" || r.statut === "En attente");
+      const rappelsFaits = rdvList.filter(r => r.rappelEnvoye).length;
+
+      const kpiTotal = document.getElementById('kpiNbRdvTotal');
+      if (kpiTotal) kpiTotal.innerText = totalRdv + ' Séance' + (totalRdv > 1 ? 's' : '');
+
+      const kpiDemain = document.getElementById('kpiNbRdvDemain');
+      if (kpiDemain) kpiDemain.innerText = rdvDemain.length + ' Rendez-Vous';
+
+      const kpiRappels = document.getElementById('kpiNbRappelsEnvoyes');
+      if (kpiRappels) kpiRappels.innerText = rappelsFaits + ' Rappelé' + (rappelsFaits > 1 ? 's' : '') + ' ✓';
+
+      const badgeSidebar = document.getElementById('badgeAgendaCount');
+      if (badgeSidebar) badgeSidebar.innerText = totalRdv + ' RDV';
+
+      // Rendu du tableau
+      const tbody = document.getElementById('tbodyAgendaRDV');
+      if (tbody) {
+        let listeFiltree = rdvList;
+        if (dateFiltreAgenda === 'demain') {
+          listeFiltree = rdvList.filter(r => r.date === "12/10/2026");
+        } else if (dateFiltreAgenda === 'aujourdhui') {
+          listeFiltree = rdvList.filter(r => r.date === "11/10/2026");
+        }
+
+        tbody.innerHTML = listeFiltree.map((r, idx) => {
+          let badgeRappel = r.rappelEnvoye
+            ? '<span class="badge-status cure" style="background:#ECFDF5; color:#059669; font-weight:700;">Rappelé ✓</span>'
+            : '<span class="badge-status wait" style="background:#FEF3C7; color:#D97706; font-weight:700;">En attente ⏳</span>';
+
+          return `
+            <tr style="border-bottom:1px solid #F1F5F9;">
+              <td style="padding:10px; font-weight:800; color:#0F172A;">${r.heure}</td>
+              <td style="padding:10px; color:#475569;">${r.date}</td>
+              <td style="padding:10px;">
+                <strong style="color:#0D9488; cursor:pointer;" onclick="ouvrirDossierClinique('${r.patientId}')">${r.patientNom}</strong>
+                <div style="font-size:11px; color:#64748B;">📞 ${r.patientTel}</div>
+              </td>
+              <td style="padding:10px; font-weight:600;">${r.acte}</td>
+              <td style="padding:10px; color:#334155;">${r.praticien}</td>
+              <td style="padding:10px;"><span class="badge-status wait" style="background:#F1F5F9; color:#475569;">${r.cabine}</span></td>
+              <td style="padding:10px;"><span class="badge-status ${r.statut === 'Confirme' ? 'cure' : 'attente'}">${r.statut}</span></td>
+              <td style="padding:10px; text-align:center;">${badgeRappel}</td>
+              <td style="padding:10px; text-align:right;">
+                <div style="display:flex; justify-content:flex-end; gap:6px;">
+                  <button class="btn-action" style="background:#25D366; color:#FFFFFF; font-weight:700; font-size:10.5px; padding:3px 8px; border:none;" onclick="envoyerRappelWhatsAppIndividuel('${r.id}')">
+                    💬 Rappel WhatsApp
+                  </button>
+                  <button class="btn-action btn-action-outline" style="font-size:10.5px; padding:3px 8px;" onclick="passerRDVEnCabineDirect('${r.id}')">
+                    🚪 En Cabine
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      // Peupler le select des patients dans modalNouveauRDV
+      const selectPat = document.getElementById('rdvPatientSelect');
+      if (selectPat && CRM_STORE.patients) {
+        selectPat.innerHTML = CRM_STORE.patients.map(p => {
+          return `<option value="${p.id}" data-tel="${p.tel}">${p.nom} (${p.tel}) — ${p.pathologie.slice(0, 22)}</option>`;
+        }).join('');
+      }
+    }
+
+    function filtrerDateRDV(filtre) {
+      dateFiltreAgenda = filtre;
+      renderAgendaRDVView();
+    }
+
+    function envoyerRappelWhatsAppIndividuel(rdvId) {
+      const r = CRM_STORE.rendezVous.find(x => x.id === rdvId);
+      if (!r || !r.patientTel) {
+        showToast("Numéro de téléphone introuvable pour ce rendez-vous.", "error");
+        return;
+      }
+
+      const cleanTel = nettoyerNumeroMarocain(r.patientTel);
+      const msg = `Bonjour ${r.patientNom},
+
+Le *Cabinet de Kinésithérapie du Dr. Hamza LAATIRIS* vous rappelle votre séance de *${r.acte}* prévue :
+
+📅 *Date :* ${r.date} à *${r.heure}*
+👨‍⚕️ *Praticien :* ${r.praticien}
+🚪 *Lieu :* ${r.cabine} — Centre Médical, Taza
+💡 *Conseil pratique :* Merci de vous munir d'une tenue confortable et de votre serviette personnelle.
+
+En cas d'empêchement ou pour reporter, merci de nous avertir au plus tôt en répondant à ce message. À très bientôt !`;
+
+      const waUrl = "https://api.whatsapp.com/send?phone=" + cleanTel + "&text=" + encodeURIComponent(msg);
+
+      if (typeof window !== 'undefined') {
+        window.open(waUrl, '_blank');
+      }
+
+      r.rappelEnvoye = true;
+      r.statut = "Confirme";
+      saveStore();
+      renderAgendaRDVView();
+      showToast("📲 Rappel WhatsApp envoyé avec succès à " + r.patientNom + " !", "success");
+    }
+
+    function passerRDVEnCabineDirect(rdvId) {
+      const r = CRM_STORE.rendezVous.find(x => x.id === rdvId);
+      if (!r) return;
+
+      // Trouver la cabine correspondante ou la première libre
+      let cab = CRM_STORE.cabines.find(c => c.nom.toLowerCase().includes(r.cabine.toLowerCase()));
+      if (!cab) cab = CRM_STORE.cabines.find(c => c.statut === 'libre') || CRM_STORE.cabines[0];
+
+      // Affecter la cabine
+      cab.statut = 'occupee';
+      cab.patientId = r.patientId;
+      cab.patientNom = r.patientNom;
+      cab.soin = r.acte;
+      cab.dureeMin = r.duree || 45;
+      cab.tempsRestantSec = (r.duree || 45) * 60;
+      cab.timerActif = true;
+      r.statut = "En cours";
+
+      saveStore();
+      navTo('cabines');
+      showToast("🚪 " + r.patientNom + " installé en " + cab.nom + " ! Minuteur 45 min enclenché.", "success");
+    }
+
+    function ouvrirModalNouveauRDV() {
+      const selectPat = document.getElementById('rdvPatientSelect');
+      if (selectPat && CRM_STORE.patients) {
+        selectPat.innerHTML = CRM_STORE.patients.map(p => {
+          return `<option value="${p.id}" data-tel="${p.tel}">${p.nom} (${p.tel})</option>`;
+        }).join('');
+      }
+      const dInput = document.getElementById('rdvDateInput');
+      if (dInput) dInput.value = "12/10/2026";
+      ouvrirModal('modalNouveauRDV');
+    }
+
+    function enregistrerNouveauRDVFormulaire(e) {
+      if (e && e.preventDefault) e.preventDefault();
+
+      const selPat = document.getElementById('rdvPatientSelect');
+      const dateVal = document.getElementById('rdvDateInput').value.trim();
+      const heureVal = document.getElementById('rdvHeureSelect').value;
+      const acteVal = document.getElementById('rdvActeSelect').value;
+      const pratVal = document.getElementById('rdvPraticienSelect').value;
+      const cabVal = document.getElementById('rdvCabineSelect').value;
+
+      if (!selPat || !dateVal) return;
+      const pId = selPat.value;
+      const patObj = CRM_STORE.patients.find(x => x.id === pId);
+      const patNom = patObj ? patObj.nom : "Patient";
+      const patTel = patObj ? patObj.tel : "0661000000";
+
+      const newRDV = {
+        id: "RDV-" + (100 + CRM_STORE.rendezVous.length + 1),
+        date: dateVal,
+        heure: heureVal,
+        duree: 45,
+        patientId: pId,
+        patientNom: patNom,
+        patientTel: patTel,
+        acte: acteVal,
+        praticien: pratVal,
+        cabine: cabVal,
+        statut: "En attente",
+        rappelEnvoye: false
+      };
+
+      CRM_STORE.rendezVous.push(newRDV);
+      saveStore();
+      fermerModal('modalNouveauRDV');
+      renderAgendaRDVView();
+      showToast("✓ Rendez-vous programmé pour " + patNom + " le " + dateVal + " à " + heureVal + " !", "success");
+    }
+
+    function ouvrirModalRappelsDemain() {
+      const tbody = document.getElementById('tbodyRappelsDemain');
+      if (!tbody || !CRM_STORE.rendezVous) return;
+
+      const rdvDemain = CRM_STORE.rendezVous.filter(r => r.date === "12/10/2026" || !r.rappelEnvoye);
+      tbody.innerHTML = rdvDemain.map((r, i) => {
+        return `
+          <tr style="border-bottom:1px solid #F1F5F9;">
+            <td style="padding:7px; font-weight:bold;">${r.heure}</td>
+            <td style="padding:7px;"><strong>${r.patientNom}</strong></td>
+            <td style="padding:7px; font-size:11px;">${r.acte} (${r.cabine})</td>
+            <td style="padding:7px; text-align:center;">
+              <span class="badge-status ${r.rappelEnvoye ? 'cure' : 'attente'}">${r.rappelEnvoye ? 'Rappelé ✓' : 'À faire'}</span>
+            </td>
+            <td style="padding:7px; text-align:right;">
+              <button class="btn-action" style="padding:2px 7px; font-size:10.5px; background:#25D366; color:#FFFFFF; border:none;" onclick="envoyerRappelWhatsAppIndividuel('${r.id}')">
+                💬 Rappeler
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      ouvrirModal('modalRappelsDemain');
+    }
+
+    function avancerRappelsDemainPasAPas() {
+      const rdvAEnvoyer = CRM_STORE.rendezVous.find(r => (r.date === "12/10/2026" || r.statut === "En attente") && !r.rappelEnvoye);
+      if (!rdvAEnvoyer) {
+        showToast("🎉 Tous les rendez-vous ont déjà été rappelés !", "info");
+        return;
+      }
+      envoyerRappelWhatsAppIndividuel(rdvAEnvoyer.id);
+      ouvrirModalRappelsDemain();
+    }
+
+    // ─── AMÉLIORATION DES PROMOS : CODES PROMO CAISSE & CIBLAGE PROFIL ───
+    function appliquerCodePromoCaisse() {
+      const input = document.getElementById('posCodePromoInput');
+      if (!input) return;
+      const codeSaisi = input.value.trim().toUpperCase();
+      if (!codeSaisi) {
+        showToast("Veuillez saisir un code promotionnel.", "error");
+        return;
+      }
+
+      const promo = CRM_STORE.promos.find(p => (p.codePromo && p.codePromo.toUpperCase() === codeSaisi) || (p.titre && p.titre.toUpperCase().includes(codeSaisi)));
+      if (!promo) {
+        showToast("❌ Code promo '" + codeSaisi + "' inexistant ou expiré.", "error");
+        return;
+      }
+
+      codePromoActifCaisse = promo;
+      montantRemiseActiveCaisse = Math.max(0, promo.prixNormal - promo.prixPromo) || 150;
+
+      const lbl = document.getElementById('lblRemiseCodePromoAppliquee');
+      const valEl = document.getElementById('valRemisePromo');
+      if (lbl) lbl.style.display = 'block';
+      if (valEl) valEl.innerText = montantRemiseActiveCaisse;
+
+      showToast("🎁 Code Promo '" + promo.codePromo + "' appliqué ! Remise immédiate de " + montantRemiseActiveCaisse + " DH.", "success");
+      renderPanierTicket();
+    }
+
+    function filtrerCarnetParProfil(profil) {
+      const selectPatient = document.getElementById('selectPatientWhatsApp');
+      if (!selectPatient || !CRM_STORE.patients) return;
+
+      let filtres = CRM_STORE.patients;
+      if (profil === 'inactifs') {
+        filtres = filtres.filter(p => p.seancesFaites >= p.seancesTotal || p.statut === 'Terminé');
+      } else if (profil === 'kine') {
+        filtres = filtres.filter(p => p.pathologie.toLowerCase().includes('tarwid') || p.pathologie.toLowerCase().includes('lca') || p.pathologie.toLowerCase().includes('avc'));
+      } else if (profil === 'massage') {
+        filtres = filtres.filter(p => p.pathologie.toLowerCase().includes('massage') || p.pathologie.toLowerCase().includes('drainage'));
+      }
+
+      let optionsHtml = '<optgroup label="🎯 Patients Ciblés (' + filtres.length + ')">';
+      optionsHtml += filtres.map(p => {
+        return `<option value="${p.id}" data-tel="${p.tel || ''}" data-nom="${p.nom}" data-statut="${p.statut}">${p.nom} (${p.tel}) — ${p.pathologie.slice(0, 22)}</option>`;
+      }).join('');
+      optionsHtml += '</optgroup>';
+
+      if (profil === 'tous' || profil === 'prospects') {
+        if (CRM_STORE.contactsExternes && CRM_STORE.contactsExternes.length > 0) {
+          optionsHtml += '<optgroup label="➕ Prospects WhatsApp">';
+          optionsHtml += CRM_STORE.contactsExternes.map(c => {
+            return `<option value="${c.id}" data-tel="${c.tel}" data-nom="${c.nom}" data-statut="Prospect">${c.nom} (${c.tel}) — Prospect</option>`;
+          }).join('');
+          optionsHtml += '</optgroup>';
+        }
+      }
+
+      selectPatient.innerHTML = optionsHtml;
+      actualiserApercuWhatsApp();
+      showToast("🎯 Carnet filtré : " + filtres.length + " contacts correspondent à ce profil.", "info");
+    }
+
     function navTo(sectionId, btn) {
       document.querySelectorAll('.menu-item-btn').forEach(b => b.classList.remove('active'));
       if (btn) btn.classList.add('active');
@@ -5856,6 +6419,7 @@ Au plaisir de veiller sur votre confort et votre mobilité !`;
 
       const titles = {
         'cockpit': isArabic ? 'لوحة القيادة العلاجية' : 'Tableau de Bord Thérapeutique',
+        'agenda-rdv': isArabic ? 'جدول المواعيد والتذكير عبر واتساب' : 'Agenda des Rendez-Vous & Rappels WhatsApp',
         'cabines': isArabic ? 'قاعات وغرف التدليك' : 'Cabines de Soin & Tables',
         'patients': isArabic ? 'ملفات المرضى والفحوصات' : 'Dossiers Patients & Bilans',
         'seances': isArabic ? 'سجل الحصص اليومية' : 'Pointage Séances & Présences',
@@ -5954,6 +6518,7 @@ Au plaisir de veiller sur votre confort et votre mobilité !`;
       renderMutuelleRecuView();
       peuplerSelectsPatients();
       renderPromosView();
+      renderAgendaRDVView();
         renderScannerButtons();
       } catch (err) {
         console.error('Erreur renderAllViews:', err);
@@ -7530,6 +8095,16 @@ window.envoyerWhatsAppDirectLigneDiffusion = envoyerWhatsAppDirectLigneDiffusion
 window.reinitialiserStatutsCampagne = reinitialiserStatutsCampagne;
 window.copierTousLesLiensWhatsApp = copierTousLesLiensWhatsApp;
 window.executerEnvoiWhatsAppSelonMode = executerEnvoiWhatsAppSelonMode;
+window.renderAgendaRDVView = renderAgendaRDVView;
+window.filtrerDateRDV = filtrerDateRDV;
+window.envoyerRappelWhatsAppIndividuel = envoyerRappelWhatsAppIndividuel;
+window.passerRDVEnCabineDirect = passerRDVEnCabineDirect;
+window.ouvrirModalNouveauRDV = ouvrirModalNouveauRDV;
+window.enregistrerNouveauRDVFormulaire = enregistrerNouveauRDVFormulaire;
+window.ouvrirModalRappelsDemain = ouvrirModalRappelsDemain;
+window.avancerRappelsDemainPasAPas = avancerRappelsDemainPasAPas;
+window.appliquerCodePromoCaisse = appliquerCodePromoCaisse;
+window.filtrerCarnetParProfil = filtrerCarnetParProfil;
 window.renderPromosView = renderPromosView;
 window.filtrerPromosCategorie = filtrerPromosCategorie;
 window.basculerModeDestinataire = basculerModeDestinataire;
