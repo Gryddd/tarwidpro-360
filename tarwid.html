@@ -1001,12 +1001,17 @@
         <span class="nav-lbl" data-fr="Cartes Patients &amp; QR Code" data-ar="بطاقات المرضى والرمز الذكي">Cartes Patients &amp; QR Code</span>
       </button>
 
-      <!-- PÔLE 2 : CAISSE & FORFAITS -->
-      <div class="menu-category-title nav-lbl" data-fr="🧾 Caisse &amp; Forfaits" data-ar="الصندوق والاشتراكات">🧾 Caisse &amp; Forfaits</div>
+      <!-- PÔLE 2 : CAISSE & OFFRES -->
+      <div class="menu-category-title nav-lbl" data-fr="🧾 Caisse &amp; Offres" data-ar="الصندوق والعروض">🧾 Caisse &amp; Offres</div>
       <button class="menu-item-btn" onclick="navTo('caisse-forfaits', this)">
         <span>💳</span>
         <span class="nav-lbl" data-fr="Caisse Tactile &amp; Krediat" data-ar="الصندوق وباقات الحصص">Caisse Tactile &amp; Krediat</span>
         <span class="menu-badge" style="background:#ECFDF5; color:#059669;">4 650 DH</span>
+      </button>
+      <button class="menu-item-btn" onclick="navTo('promos-whatsapp', this)">
+        <span>🎁</span>
+        <span class="nav-lbl" data-fr="Offres &amp; Promos WhatsApp" data-ar="عروض التخفيض والواتساب">Offres &amp; Promos WhatsApp</span>
+        <span class="menu-badge" style="background:#FDF2F8; color:#DB2777; font-weight:700;">PROMO</span>
       </button>
 
       <!-- PÔLE 3 : COMPTABILITÉ CGNC -->
@@ -1958,6 +1963,206 @@
           </div>
         </div>
       </section>
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <!-- SECTION PROMOS & DIFFUSION WHATSAPP (DR. HAMZA LAATIRIS) -->
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <section id="view-promos-whatsapp" class="tab-section">
+        <!-- Bandeau d'en-tête et KPIs aérés -->
+        <div class="panel-box" style="margin-bottom:20px; background:linear-gradient(135deg, #F0FDFA 0%, #FFFFFF 100%); border-left:4px solid #0D9488;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px;">
+            <div>
+              <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+                <span style="font-size:24px;">🎁</span>
+                <h3 style="margin:0; font-size:18px; color:#0F172A; font-weight:800;">Offres Promotionnelles &amp; Diffusion WhatsApp</h3>
+                <span class="badge-status wait" style="background:#CCFBF1; color:#0F766E; font-weight:700;">Direct WhatsApp API</span>
+              </div>
+              <p style="margin:0; font-size:13px; color:#475569; max-width:760px; line-height:1.5;">
+                Configurez vos offres promotionnelles, forfaits de kinésithérapie et packs de massothérapie pour le <strong>Cabinet du Dr. Hamza LAATIRIS</strong>. Diffusez vos offres personnalisées directement sur WhatsApp à votre carnet de patients ou à de nouveaux numéros prospects en 1 clic.
+              </p>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center;">
+              <button class="btn-action btn-action-primary" onclick="ouvrirModalNouvellePromo()" style="background:#0D9488; font-weight:700; padding:10px 18px; box-shadow:0 2px 6px rgba(13,148,136,0.25);">
+                ➕ Configurer une Offre Promo
+              </button>
+            </div>
+          </div>
+
+          <!-- 3 Compteurs KPIs Épurés -->
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-top:18px; border-top:1px solid #E2E8F0; padding-top:16px;">
+            <div style="background:#FFFFFF; padding:12px 16px; border-radius:10px; border:1px solid #E2E8F0; display:flex; align-items:center; gap:14px;">
+              <div style="width:42px; height:42px; border-radius:8px; background:#FDF2F8; color:#DB2777; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:bold;">🎁</div>
+              <div>
+                <div style="font-size:11.5px; color:#64748B; font-weight:600; text-transform:uppercase;">Offres Actives</div>
+                <div id="kpiNbPromosActives" style="font-size:20px; font-weight:800; color:#0F172A;">3 Offres</div>
+              </div>
+            </div>
+
+            <div style="background:#FFFFFF; padding:12px 16px; border-radius:10px; border:1px solid #E2E8F0; display:flex; align-items:center; gap:14px;">
+              <div style="width:42px; height:42px; border-radius:8px; background:#EFF6FF; color:#0284C7; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:bold;">👥</div>
+              <div>
+                <div style="font-size:11.5px; color:#64748B; font-weight:600; text-transform:uppercase;">Carnet Destinataires</div>
+                <div id="kpiNbContactsDispos" style="font-size:20px; font-weight:800; color:#0F172A;">7 Patients &amp; Prospects</div>
+              </div>
+            </div>
+
+            <div style="background:#FFFFFF; padding:12px 16px; border-radius:10px; border:1px solid #E2E8F0; display:flex; align-items:center; gap:14px;">
+              <div style="width:42px; height:42px; border-radius:8px; background:#ECFDF5; color:#059669; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:bold;">📲</div>
+              <div>
+                <div style="font-size:11.5px; color:#64748B; font-weight:600; text-transform:uppercase;">Messages Diffusés</div>
+                <div id="kpiNbMessagesDiffuses" style="font-size:20px; font-weight:800; color:#059669;">44 Envois Réussis</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grille en 2 Colonnes Équilibrées -->
+        <div style="display:grid; grid-template-columns:1.15fr 0.85fr; gap:20px; align-items:start;">
+
+          <!-- COLONNE GAUCHE : LISTE & GESTION DES OFFRES PROMOTIONNELLES -->
+          <div>
+            <div class="panel-box">
+              <div class="panel-header" style="margin-bottom:14px;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <span style="font-size:18px;">🏷️</span>
+                  <div>
+                    <h4 style="margin:0; font-size:15px; font-weight:700;">Catalogue des Offres &amp; Packs Spéciaux</h4>
+                    <span style="font-size:12px; color:#64748B;">Sélectionnez une offre pour prévisualiser son envoi WhatsApp</span>
+                  </div>
+                </div>
+                <div style="display:flex; gap:6px;">
+                  <button class="btn-action btn-action-outline" onclick="filtrerPromosCategorie('toutes')" style="padding:4px 9px; font-size:11px;">Toutes</button>
+                  <button class="btn-action btn-action-outline" onclick="filtrerPromosCategorie('kine')" style="padding:4px 9px; font-size:11px;">Tarwid Kiné</button>
+                  <button class="btn-action btn-action-outline" onclick="filtrerPromosCategorie('massage')" style="padding:4px 9px; font-size:11px;">Massothérapie</button>
+                </div>
+              </div>
+
+              <!-- Conteneur Dynamique des Cartes Promo -->
+              <div id="listePromosCardsContainer" style="display:flex; flex-direction:column; gap:12px;">
+                <!-- Rendu par JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- COLONNE DROITE : CONSOLE DE DIFFUSION WHATSAPP -->
+          <div>
+            <div class="panel-box" style="border:1px solid #CBD5E1; box-shadow:0 4px 12px rgba(0,0,0,0.04);">
+              <div class="panel-header" style="background:#F8FAFC; margin:-16px -16px 16px -16px; padding:14px 16px; border-bottom:1px solid #E2E8F0; border-radius:12px 12px 0 0;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span style="font-size:18px;">📲</span>
+                  <h4 style="margin:0; font-size:14px; font-weight:800; color:#0F172A;">Console d'Envoi WhatsApp Direct</h4>
+                </div>
+                <span class="badge-status wait" style="background:#25D366; color:#FFFFFF; font-weight:700; font-size:11px;">WhatsApp Web &amp; App</span>
+              </div>
+
+              <!-- Étape 1 : Offre Sélectionnée -->
+              <div style="margin-bottom:14px;">
+                <label style="display:block; font-size:12px; font-weight:700; color:#334155; margin-bottom:5px;">
+                  1. Offre à Diffuser :
+                </label>
+                <select id="selectPromoAEnvoyer" class="search-input" style="width:100%; font-size:12.5px; font-weight:600; padding:8px 10px;" onchange="actualiserApercuWhatsApp()">
+                  <!-- Rendu dynamique -->
+                </select>
+              </div>
+
+              <!-- Étape 2 : Choix du Destinataire avec 2 modes -->
+              <div style="margin-bottom:14px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                  <label style="font-size:12px; font-weight:700; color:#334155;">
+                    2. Destinataire :
+                  </label>
+                  <!-- Sélecteur d'onglets pour le mode destinataire -->
+                  <div style="display:flex; background:#E2E8F0; border-radius:6px; padding:2px;">
+                    <button id="btnTabCarnet" type="button" onclick="basculerModeDestinataire('carnet')" style="border:none; background:#FFFFFF; color:#0F172A; font-weight:700; font-size:11px; padding:3px 8px; border-radius:4px; cursor:pointer;">
+                      👥 Carnet Patients
+                    </button>
+                    <button id="btnTabNouveauNum" type="button" onclick="basculerModeDestinataire('nouveau')" style="border:none; background:transparent; color:#64748B; font-weight:700; font-size:11px; padding:3px 8px; border-radius:4px; cursor:pointer;">
+                      ➕ Nouveau Numéro
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Mode A : Sélection depuis le Carnet Patients -->
+                <div id="panneauDestinataireCarnet">
+                  <select id="selectPatientWhatsApp" class="search-input" style="width:100%; font-size:12.5px; padding:8px 10px;" onchange="actualiserApercuWhatsApp()">
+                    <!-- Peuplé par JS avec les patients et leurs téléphones -->
+                  </select>
+                  <div id="infoPatientSelectionne" style="margin-top:6px; font-size:11px; color:#64748B; display:flex; justify-content:space-between;">
+                    <span>Téléphone détecté : <strong id="lblTelDetecte" style="color:#0F172A;">-</strong></span>
+                    <span>Statut : <strong id="lblStatutDetecte" style="color:#0D9488;">Patient En cours</strong></span>
+                  </div>
+                </div>
+
+                <!-- Mode B : Saisie manuelle d'un nouveau numéro (Demandé par l'utilisateur) -->
+                <div id="panneauDestinataireNouveau" style="display:none; background:#F8FAFC; border:1px dashed #CBD5E1; border-radius:8px; padding:12px;">
+                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:8px;">
+                    <div>
+                      <label style="display:block; font-size:11px; font-weight:600; color:#475569; margin-bottom:3px;">Nom du Prospect / Contact :</label>
+                      <input id="inputNouveauNom" type="text" class="search-input" placeholder="Ex: M. Ahmed Chraibi" style="width:100%; font-size:12px; padding:6px 9px;" oninput="actualiserApercuWhatsApp()">
+                    </div>
+                    <div>
+                      <label style="display:block; font-size:11px; font-weight:600; color:#475569; margin-bottom:3px;">N° WhatsApp (Maroc) :</label>
+                      <input id="inputNouveauTel" type="tel" class="search-input" placeholder="0661234567 ou +212..." style="width:100%; font-size:12px; padding:6px 9px;" oninput="actualiserApercuWhatsApp()">
+                    </div>
+                  </div>
+                  <label style="display:flex; align-items:center; gap:6px; font-size:11.5px; color:#334155; cursor:pointer;">
+                    <input id="chkSauvegarderNouveauContact" type="checkbox" checked style="accent-color:#0D9488;">
+                    <span>Enregistrer ce numéro dans le carnet d'adresses (prospects)</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Étape 3 : Message Personnalisé & Note Complémentaire -->
+              <div style="margin-bottom:14px;">
+                <label style="display:block; font-size:12px; font-weight:700; color:#334155; margin-bottom:5px;">
+                  3. Note Personnalisée (Optionnelle) :
+                </label>
+                <input id="inputNotePersoWhatsApp" type="text" class="search-input" placeholder="Ex: En espérant que votre genou va mieux après vos séances !" style="width:100%; font-size:12px; padding:6px 10px;" oninput="actualiserApercuWhatsApp()">
+              </div>
+
+              <!-- Étape 4 : Aperçu en Direct Style Bulle WhatsApp -->
+              <div style="margin-bottom:16px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                  <label style="font-size:12px; font-weight:700; color:#334155;">
+                    👁️ Prévisualisation du Message WhatsApp :
+                  </label>
+                  <span style="font-size:11px; color:#64748B;">Formaté pour smartphone</span>
+                </div>
+
+                <div style="background:#EFEAE2; border-radius:10px; padding:12px; border:1px solid #E2D9C8; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                  <div style="background:#FFFFFF; border-radius:8px 8px 8px 2px; padding:12px 14px; box-shadow:0 1px 2px rgba(0,0,0,0.12); position:relative; font-size:12px; line-height:1.45; color:#111B21; white-space:pre-wrap;" id="previewBulleWhatsApp">
+                    <!-- Généré dynamiquement par JS -->
+                  </div>
+                  <div style="text-align:right; margin-top:4px; font-size:10px; color:#667781;">
+                    Aujourd'hui • <span style="color:#53BDEB; font-weight:bold;">✓✓ Remis</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Étape 5 : Actions d'Envoi WhatsApp -->
+              <div style="display:flex; gap:10px;">
+                <button class="btn-action" style="flex:2; background:#25D366; color:#FFFFFF; font-weight:800; font-size:13px; padding:11px 16px; justify-content:center; border:none; box-shadow:0 2px 8px rgba(37,211,102,0.3);" onclick="envoyerOffreWhatsApp()">
+                  <span>💬 Envoyer par WhatsApp (1-Clic)</span>
+                </button>
+                <button class="btn-action btn-action-outline" style="flex:1; justify-content:center; font-size:12px; padding:11px;" onclick="copierMessageWhatsApp()">
+                  <span>📋 Copier Texte</span>
+                </button>
+              </div>
+
+              <!-- Raccourcis d'Envoi Rapide au Carnet -->
+              <div style="margin-top:16px; border-top:1px solid #E2E8F0; padding-top:12px;">
+                <div style="font-size:11.5px; font-weight:700; color:#475569; margin-bottom:8px;">
+                  ⚡ Envoi Rapide 1-Clic aux Patients Récents :
+                </div>
+                <div id="listeEnvoisRapidesWhatsApp" style="display:flex; flex-direction:column; gap:6px;">
+                  <!-- Rendu par JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
 
       <!-- ═══════════════════════════════════════════════════════════ -->
       <!-- SECTION 5 : STOCKS DE CONSOMMABLES (HUILES & MATÉRIEL) -->
@@ -4014,6 +4219,90 @@
     </div>
   </div>
 
+  
+  <!-- ─── MODALE NOUVELLE OFFRE PROMO / FORFAIT ─── -->
+  <div class="modal-backdrop" id="modalNouvellePromo">
+    <div class="modal-window" style="max-width:560px;">
+      <div class="modal-header" style="background:#0D9488; color:#FFFFFF;">
+        <h4 style="margin:0; font-size:15px; color:#FFFFFF;" id="modalPromoTitle">🎁 Configurer une Offre Promotionnelle</h4>
+        <button class="modal-close-btn" style="color:#FFFFFF;" onclick="fermerModal('modalNouvellePromo')">✕</button>
+      </div>
+      <div class="modal-body" style="padding:18px;">
+        <form onsubmit="sauvegarderPromoFormulaire(event)">
+          <input type="hidden" id="formPromoId" value="">
+
+          <div style="margin-bottom:12px;">
+            <label style="display:block; font-size:12px; font-weight:700; color:#334155; margin-bottom:4px;">
+              Titre de l'Offre Promotionnelle * :
+            </label>
+            <input id="formPromoTitre" type="text" class="search-input" required placeholder="Ex: Pack Soulagement Dos & Cervicales (5 Séances)" style="width:100%; font-size:12.5px; padding:7px 10px;">
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+            <div>
+              <label style="display:block; font-size:12px; font-weight:700; color:#334155; margin-bottom:4px;">
+                Catégorie de Soin :
+              </label>
+              <select id="formPromoCategorie" class="search-input" style="width:100%; font-size:12px; padding:7px 10px;">
+                <option value="Kiné & Massage Thérapeutique">Kiné &amp; Massage Thérapeutique</option>
+                <option value="Massage & Récupération">Massage &amp; Récupération</option>
+                <option value="Rééducation Fonctionnelle">Rééducation Fonctionnelle (Tarwid)</option>
+                <option value="Drainage Lymphatique">Drainage Lymphatique</option>
+                <option value="Bilan Spécialisé">Bilan Spécialisé BDK</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block; font-size:12px; font-weight:700; color:#334155; margin-bottom:4px;">
+                Date Limite de Validité * :
+              </label>
+              <input id="formPromoValidite" type="text" class="search-input" required placeholder="31/10/2026" style="width:100%; font-size:12px; padding:7px 10px;">
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:12px; background:#F8FAFC; padding:10px; border-radius:8px; border:1px solid #E2E8F0;">
+            <div>
+              <label style="display:block; font-size:11px; font-weight:700; color:#475569; margin-bottom:4px;">
+                Prix Normal (DH) :
+              </label>
+              <input id="formPromoPrixNormal" type="number" step="10" required placeholder="1250" class="search-input" style="width:100%; font-size:12px; padding:6px 8px;" oninput="calculerRemisePromoForm()">
+            </div>
+            <div>
+              <label style="display:block; font-size:11px; font-weight:700; color:#0D9488; margin-bottom:4px;">
+                Prix Promo (DH) * :
+              </label>
+              <input id="formPromoPrixPromo" type="number" step="10" required placeholder="890" class="search-input" style="width:100%; font-size:12px; font-weight:bold; color:#0D9488; padding:6px 8px;" oninput="calculerRemisePromoForm()">
+            </div>
+            <div>
+              <label style="display:block; font-size:11px; font-weight:700; color:#DB2777; margin-bottom:4px;">
+                Remise Calculée :
+              </label>
+              <input id="formPromoReduction" type="text" readonly value="-29%" class="search-input" style="width:100%; font-size:12px; font-weight:bold; color:#DB2777; background:#FFF1F2; padding:6px 8px;">
+            </div>
+          </div>
+
+          <div style="margin-bottom:14px;">
+            <label style="display:block; font-size:12px; font-weight:700; color:#334155; margin-bottom:4px;">
+              Description &amp; Avantages Thérapeutiques :
+            </label>
+            <textarea id="formPromoDescription" class="search-input" rows="3" placeholder="Décrivez les bienfaits, la durée des séances ou les techniques utilisées..." style="width:100%; font-size:12px; padding:8px 10px; resize:vertical;"></textarea>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <label style="display:flex; align-items:center; gap:6px; font-size:12px; font-weight:600; color:#334155; cursor:pointer;">
+              <input id="formPromoActif" type="checkbox" checked style="accent-color:#0D9488;">
+              <span>Offre active et immédiatement disponible</span>
+            </label>
+
+            <div style="display:flex; gap:8px;">
+              <button type="button" class="btn-action btn-action-outline" onclick="fermerModal('modalNouvellePromo')">Annuler</button>
+              <button type="submit" class="btn-action btn-action-primary" style="background:#0D9488;">💾 Enregistrer l'Offre</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <!-- Conteneur Toast Notifications Flottant -->
   <div id="toastContainer" style="position:fixed; top:20px; right:20px; z-index:99999; display:flex; flex-direction:column; gap:10px; pointer-events:none;"></div>
 
@@ -4265,6 +4554,53 @@
         { id: "SEC-2026-091", date: "11/10/2026", heure: "10:15", patientId: "PAT-002", patientNom: "Fatima Zahra Mansouri", acte: "Massage Décontractant 45'", praticien: "Mme Salma Benjelloun", numSeance: 5, total: 5 },
         { id: "SEC-2026-090", date: "11/10/2026", heure: "09:30", patientId: "PAT-001", patientNom: "Karim Bennani", acte: "Tarwid Genou (LCA)", praticien: "Dr. Hamza LAATIRIS", numSeance: 8, total: 10 }
       ],
+      promos: [
+        {
+          id: "PROMO-001",
+          titre: "Pack Soulagement Dos & Cervicales (5 Séances)",
+          categorie: "Kiné & Massage Thérapeutique",
+          prixNormal: 1250,
+          prixPromo: 890,
+          reduction: "-29%",
+          validite: "31/10/2026",
+          actif: true,
+          description: "5 séances complètes combinant thermothérapie infrarouge, décontracturation manuelle et étirements doux ciblés.",
+          nbEnvoyes: 14
+        },
+        {
+          id: "PROMO-002",
+          titre: "Offre Bien-Être & Drainage Lymphatique (3 Séances)",
+          categorie: "Massage & Récupération",
+          prixNormal: 900,
+          prixPromo: 650,
+          reduction: "-28%",
+          validite: "15/11/2026",
+          actif: true,
+          description: "Idéal pour jambes lourdes, rétention d'eau et récupération circulatoire avec application d'huiles essentielles drainantes.",
+          nbEnvoyes: 8
+        },
+        {
+          id: "PROMO-003",
+          titre: "Bilan Postural Complet + 1ère Séance Offerte",
+          categorie: "Bilan Spécialisé",
+          prixNormal: 400,
+          prixPromo: 250,
+          reduction: "-38%",
+          validite: "30/11/2026",
+          actif: true,
+          description: "Évaluation podo-posturale et motrice personnalisée par le Dr. Hamza LAATIRIS pour toute nouvelle prise en charge.",
+          nbEnvoyes: 22
+        }
+      ],
+      contactsExternes: [
+        {
+          id: "PROSPECT-001",
+          nom: "Ilyas Naciri",
+          tel: "0663-889900",
+          dateAjout: "10/10/2026",
+          remarque: "Prospect intéressé par rééducation du dos"
+        }
+      ],
       panier: [],
       patientDossierActuelId: "PAT-001"
     };
@@ -4280,6 +4616,12 @@
           if (!CRM_STORE.patients || !CRM_STORE.cabines || !CRM_STORE.journal || !CRM_STORE.stocks) {
             CRM_STORE = JSON.parse(JSON.stringify(DEFAULT_STORE));
           } else {
+            if (!CRM_STORE.promos || CRM_STORE.promos.length === 0) {
+              CRM_STORE.promos = JSON.parse(JSON.stringify(DEFAULT_STORE.promos));
+            }
+            if (!CRM_STORE.contactsExternes) {
+              CRM_STORE.contactsExternes = JSON.parse(JSON.stringify(DEFAULT_STORE.contactsExternes));
+            }
             // Migration automatique vers le nom officiel du médecin chef : Dr. Hamza LAATIRIS
             CRM_STORE.patients.forEach(p => {
               if (p.praticien && (p.praticien.includes('Amrani') || p.praticien.includes('Karim'))) {
@@ -4465,9 +4807,10 @@
         ]
       },
       'caisse': {
-        name: '🧾 Caisse & Forfaits',
+        name: '🧾 Caisse & Offres',
         views: [
-          { id: 'caisse-forfaits', label: '💳 Caisse POS & Carnet Krediat', icon: '💳' }
+          { id: 'caisse-forfaits', label: '💳 Caisse POS & Carnet Krediat', icon: '💳' },
+          { id: 'promos-whatsapp', label: '🎁 Offres & Diffusion WhatsApp', icon: '🎁' }
         ]
       },
       'compta': {
@@ -4607,6 +4950,495 @@
       showToast('💾 Document officiel de Liasse Fiscale exporté avec succès !', 'success');
     }
 
+    
+    // ─── GESTION DES OFFRES PROMOTIONNELLES & DIFFUSION WHATSAPP ───
+    let promoCategorieFiltreActif = 'toutes';
+    let modeDestinataireWhatsAppActif = 'carnet'; // 'carnet' ou 'nouveau'
+
+    function renderPromosView() {
+      if (!CRM_STORE.promos) return;
+
+      // 1. Mettre à jour les KPIs
+      const nbActives = CRM_STORE.promos.filter(p => p.actif).length;
+      const totalContacts = (CRM_STORE.patients ? CRM_STORE.patients.length : 0) + (CRM_STORE.contactsExternes ? CRM_STORE.contactsExternes.length : 0);
+      const totalMessages = CRM_STORE.promos.reduce((acc, p) => acc + (p.nbEnvoyes || 0), 0);
+
+      const kpiActives = document.getElementById('kpiNbPromosActives');
+      if (kpiActives) kpiActives.innerText = nbActives + ' Offre' + (nbActives > 1 ? 's' : '');
+
+      const kpiContacts = document.getElementById('kpiNbContactsDispos');
+      if (kpiContacts) kpiContacts.innerText = totalContacts + ' Contacts';
+
+      const kpiMessages = document.getElementById('kpiNbMessagesDiffuses');
+      if (kpiMessages) kpiMessages.innerText = totalMessages + ' Envois';
+
+      // 2. Rendu des cartes de promos
+      const container = document.getElementById('listePromosCardsContainer');
+      if (container) {
+        let promosFiltrees = CRM_STORE.promos;
+        if (promoCategorieFiltreActif === 'kine') {
+          promosFiltrees = promosFiltrees.filter(p => p.categorie.toLowerCase().includes('kiné') || p.categorie.toLowerCase().includes('rééducation'));
+        } else if (promoCategorieFiltreActif === 'massage') {
+          promosFiltrees = promosFiltrees.filter(p => p.categorie.toLowerCase().includes('massage') || p.categorie.toLowerCase().includes('drainage'));
+        }
+
+        if (promosFiltrees.length === 0) {
+          container.innerHTML = '<div style="text-align:center; padding:30px; color:#64748B; background:#F8FAFC; border-radius:8px;">Aucune offre trouvée dans cette catégorie.</div>';
+        } else {
+          container.innerHTML = promosFiltrees.map(p => {
+            const statusBadge = p.actif 
+              ? '<span class="badge-status cure" style="background:#ECFDF5; color:#059669; font-weight:700;">Active ✓</span>'
+              : '<span class="badge-status wait" style="background:#F1F5F9; color:#64748B;">En pause</span>';
+
+            return `
+              <div style="background:#FFFFFF; border:1px solid ${p.actif ? '#CBD5E1' : '#E2E8F0'}; border-radius:10px; padding:14px; box-shadow:0 1px 3px rgba(0,0,0,0.03); opacity:${p.actif ? '1' : '0.75'}; transition:all 0.2s ease;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; gap:8px;">
+                  <div>
+                    <span style="font-size:11px; background:#F1F5F9; color:#475569; padding:2px 7px; border-radius:4px; font-weight:600; text-transform:uppercase;">
+                      ${p.categorie}
+                    </span>
+                    <h5 style="margin:6px 0 2px 0; font-size:14px; font-weight:800; color:#0F172A;">
+                      ${p.titre}
+                    </h5>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="background:#FDF2F8; color:#DB2777; font-weight:900; font-size:12px; padding:3px 8px; border-radius:6px; border:1px solid #FCE7F3;">
+                      ${p.reduction}
+                    </span>
+                    ${statusBadge}
+                  </div>
+                </div>
+
+                <p style="margin:0 0 10px 0; font-size:12px; color:#475569; line-height:1.4;">
+                  ${p.description}
+                </p>
+
+                <!-- Tarification & Validité -->
+                <div style="display:flex; justify-content:space-between; align-items:center; background:#F8FAFC; padding:8px 10px; border-radius:6px; margin-bottom:10px;">
+                  <div style="display:flex; align-items:baseline; gap:8px;">
+                    <span style="font-size:11.5px; color:#94A3B8; text-decoration:line-through;">${p.prixNormal} DH</span>
+                    <span style="font-size:15px; font-weight:900; color:#0D9488;">${p.prixPromo} DH</span>
+                    <span style="font-size:10.5px; color:#64748B;">/ pack complet</span>
+                  </div>
+                  <div style="font-size:11px; color:#64748B;">
+                    ⏳ Jusqu'au <strong>${p.validite}</strong>
+                  </div>
+                </div>
+
+                <!-- Pied de carte : Compteur d'envois & Boutons -->
+                <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #F1F5F9; padding-top:10px;">
+                  <span style="font-size:11px; color:#64748B; display:flex; align-items:center; gap:4px;">
+                    <span>📲</span> <strong>${p.nbEnvoyes || 0}</strong> envois WhatsApp
+                  </span>
+
+                  <div style="display:flex; gap:6px;">
+                    <button class="btn-action btn-action-outline" style="padding:4px 8px; font-size:11px;" onclick="togglePromoStatut('${p.id}')">
+                      ${p.actif ? '⏸️ Suspendre' : '▶️ Activer'}
+                    </button>
+                    <button class="btn-action btn-action-outline" style="padding:4px 8px; font-size:11px;" onclick="ouvrirModalNouvellePromo('${p.id}')">
+                      ✏️ Modifier
+                    </button>
+                    <button class="btn-action" style="background:#25D366; color:#FFFFFF; font-weight:700; padding:4px 10px; font-size:11px; border:none; box-shadow:0 1px 3px rgba(37,211,102,0.3);" onclick="selectionnerPromoPourEnvoi('${p.id}')">
+                      💬 Diffuser WhatsApp
+                    </button>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      }
+
+      // 3. Peupler le select des promos dans la console WhatsApp
+      const selectPromo = document.getElementById('selectPromoAEnvoyer');
+      if (selectPromo) {
+        const valActuelle = selectPromo.value;
+        selectPromo.innerHTML = CRM_STORE.promos.map(p => {
+          return `<option value="${p.id}">${p.actif ? '🟢' : '⚪'} ${p.titre} — ${p.prixPromo} DH (${p.reduction})</option>`;
+        }).join('');
+        if (valActuelle && CRM_STORE.promos.find(p => p.id === valActuelle)) {
+          selectPromo.value = valActuelle;
+        }
+      }
+
+      // 4. Peupler le select des patients & contacts externes
+      const selectPatient = document.getElementById('selectPatientWhatsApp');
+      if (selectPatient) {
+        const valActuelle = selectPatient.value;
+        let optionsHtml = '<optgroup label="👥 Patients Enregistrés du Cabinet">';
+        if (CRM_STORE.patients) {
+          optionsHtml += CRM_STORE.patients.map(p => {
+            return `<option value="${p.id}" data-tel="${p.tel || ''}" data-nom="${p.nom}" data-statut="${p.statut || 'En cours'}">${p.nom} (${p.tel || 'Sans tél'}) — ${p.pathologie ? p.pathologie.slice(0, 24) : ''}</option>`;
+          }).join('');
+        }
+        optionsHtml += '</optgroup>';
+
+        if (CRM_STORE.contactsExternes && CRM_STORE.contactsExternes.length > 0) {
+          optionsHtml += '<optgroup label="➕ Nouveaux Contacts & Prospects WhatsApp">';
+          optionsHtml += CRM_STORE.contactsExternes.map(c => {
+            return `<option value="${c.id}" data-tel="${c.tel || ''}" data-nom="${c.nom}" data-statut="Prospect">${c.nom} (${c.tel}) — Prospect</option>`;
+          }).join('');
+          optionsHtml += '</optgroup>';
+        }
+
+        selectPatient.innerHTML = optionsHtml;
+        if (valActuelle) selectPatient.value = valActuelle;
+      }
+
+      // 5. Peupler les raccourcis d'envoi rapide
+      const containerRapide = document.getElementById('listeEnvoisRapidesWhatsApp');
+      if (containerRapide && CRM_STORE.patients) {
+        const troisDerniers = CRM_STORE.patients.slice(0, 4);
+        containerRapide.innerHTML = troisDerniers.map(p => {
+          return `
+            <div style="display:flex; justify-content:space-between; align-items:center; background:#F8FAFC; padding:6px 10px; border-radius:6px; font-size:11.5px;">
+              <div>
+                <strong style="color:#0F172A;">${p.nom}</strong>
+                <span style="color:#64748B; margin-left:6px;">${p.tel || ''}</span>
+              </div>
+              <button class="btn-action" style="padding:3px 8px; font-size:11px; background:#25D366; color:#FFFFFF; border:none;" onclick="envoyerWhatsAppDirectPatient('${p.id}')">
+                💬 1-Clic
+              </button>
+            </div>
+          `;
+        }).join('');
+      }
+
+      actualiserApercuWhatsApp();
+    }
+
+    function filtrerPromosCategorie(cat) {
+      promoCategorieFiltreActif = cat;
+      renderPromosView();
+    }
+
+    function basculerModeDestinataire(mode) {
+      modeDestinataireWhatsAppActif = mode;
+      const tabCarnet = document.getElementById('btnTabCarnet');
+      const tabNouveau = document.getElementById('btnTabNouveauNum');
+      const panneauCarnet = document.getElementById('panneauDestinataireCarnet');
+      const panneauNouveau = document.getElementById('panneauDestinataireNouveau');
+
+      if (mode === 'carnet') {
+        if (tabCarnet) { tabCarnet.style.background = '#FFFFFF'; tabCarnet.style.color = '#0F172A'; }
+        if (tabNouveau) { tabNouveau.style.background = 'transparent'; tabNouveau.style.color = '#64748B'; }
+        if (panneauCarnet) panneauCarnet.style.display = 'block';
+        if (panneauNouveau) panneauNouveau.style.display = 'none';
+      } else {
+        if (tabCarnet) { tabCarnet.style.background = 'transparent'; tabCarnet.style.color = '#64748B'; }
+        if (tabNouveau) { tabNouveau.style.background = '#FFFFFF'; tabNouveau.style.color = '#0F172A'; }
+        if (panneauCarnet) panneauCarnet.style.display = 'none';
+        if (panneauNouveau) panneauNouveau.style.display = 'block';
+      }
+      actualiserApercuWhatsApp();
+    }
+
+    function nettoyerNumeroMarocain(telBrut) {
+      if (!telBrut) return '';
+      let clean = telBrut.replace(/[^0-9+]/g, '');
+      if (clean.startsWith('+212')) {
+        clean = clean.replace('+212', '212');
+      } else if (clean.startsWith('00212')) {
+        clean = clean.replace('00212', '212');
+      } else if (clean.startsWith('06') || clean.startsWith('07')) {
+        clean = '212' + clean.slice(1);
+      } else if (clean.startsWith('6') || clean.startsWith('7')) {
+        clean = '212' + clean;
+      }
+      return clean;
+    }
+
+    function selectionnerPromoPourEnvoi(promoId) {
+      const selectPromo = document.getElementById('selectPromoAEnvoyer');
+      if (selectPromo) {
+        selectPromo.value = promoId;
+        actualiserApercuWhatsApp();
+      }
+      showToast("Offre sélectionnée pour l'envoi WhatsApp !", "info");
+    }
+
+    function actualiserApercuWhatsApp() {
+      const selectPromo = document.getElementById('selectPromoAEnvoyer');
+      const previewEl = document.getElementById('previewBulleWhatsApp');
+      const noteInput = document.getElementById('inputNotePersoWhatsApp');
+      if (!selectPromo || !previewEl) return;
+
+      const promoId = selectPromo.value;
+      const promo = CRM_STORE.promos.find(p => p.id === promoId);
+      if (!promo) {
+        previewEl.innerText = "Sélectionnez une offre pour voir l'aperçu.";
+        return;
+      }
+
+      let destinataireNom = "Cher(e) Patient(e)";
+      let destinataireTel = "";
+
+      if (modeDestinataireWhatsAppActif === 'carnet') {
+        const selectPatient = document.getElementById('selectPatientWhatsApp');
+        if (selectPatient && selectPatient.selectedIndex >= 0) {
+          const opt = selectPatient.options[selectPatient.selectedIndex];
+          destinataireNom = opt.getAttribute('data-nom') || "Cher(e) Patient(e)";
+          destinataireTel = opt.getAttribute('data-tel') || "";
+          const statut = opt.getAttribute('data-statut') || "Patient";
+
+          const lblTel = document.getElementById('lblTelDetecte');
+          const lblStatut = document.getElementById('lblStatutDetecte');
+          if (lblTel) lblTel.innerText = destinataireTel || "Non renseigné";
+          if (lblStatut) lblStatut.innerText = statut;
+        }
+      } else {
+        const inputNom = document.getElementById('inputNouveauNom');
+        const inputTel = document.getElementById('inputNouveauTel');
+        if (inputNom && inputNom.value.trim()) destinataireNom = inputNom.value.trim();
+        if (inputTel) destinataireTel = inputTel.value.trim();
+      }
+
+      const notePerso = (noteInput && noteInput.value.trim()) ? "\n\n💬 *" + noteInput.value.trim() + "*" : "";
+
+      const msg = `Bonjour ${destinataireNom},
+
+Le *Cabinet de Kinésithérapie & Rééducation du Dr. Hamza LAATIRIS* a le plaisir de vous faire bénéficier de notre offre exclusive :
+
+🎁 *${promo.titre}*
+💰 *Prix Spécial :* *${promo.prixPromo} DH* au lieu de ~${promo.prixNormal} DH~ (${promo.reduction})
+📋 *Détails :* ${promo.description}
+⏳ *Offre valable jusqu'au :* ${promo.validite}${notePerso}
+
+📍 *Cabinet Dr. Hamza LAATIRIS* — Taza
+📞 Pour réserver votre créneau ou pour toute information, répondez directement à ce message ou contactez notre secrétariat.
+
+Au plaisir de veiller sur votre confort et votre mobilité !`;
+
+      previewEl.innerText = msg;
+    }
+
+    function envoyerOffreWhatsApp() {
+      const selectPromo = document.getElementById('selectPromoAEnvoyer');
+      if (!selectPromo) return;
+      const promo = CRM_STORE.promos.find(p => p.id === selectPromo.value);
+      if (!promo) {
+        showToast("Veuillez sélectionner une promotion.", "error");
+        return;
+      }
+
+      let tel = "";
+      let nom = "";
+
+      if (modeDestinataireWhatsAppActif === 'carnet') {
+        const selectPatient = document.getElementById('selectPatientWhatsApp');
+        if (!selectPatient || selectPatient.selectedIndex < 0) {
+          showToast("Aucun patient sélectionné dans le carnet.", "error");
+          return;
+        }
+        const opt = selectPatient.options[selectPatient.selectedIndex];
+        tel = opt.getAttribute('data-tel');
+        nom = opt.getAttribute('data-nom');
+      } else {
+        const inputNom = document.getElementById('inputNouveauNom');
+        const inputTel = document.getElementById('inputNouveauTel');
+        nom = inputNom ? inputNom.value.trim() : "Nouveau Contact";
+        tel = inputTel ? inputTel.value.trim() : "";
+
+        if (!tel) {
+          showToast("Veuillez saisir le numéro de téléphone WhatsApp.", "error");
+          return;
+        }
+
+        // Sauvegarder dans contactsExternes si la case est cochée
+        const chkSave = document.getElementById('chkSauvegarderNouveauContact');
+        if (chkSave && chkSave.checked) {
+          const dejaPresent = CRM_STORE.contactsExternes.some(c => c.tel.replace(/[^0-9]/g, '') === tel.replace(/[^0-9]/g, ''));
+          if (!dejaPresent) {
+            CRM_STORE.contactsExternes.push({
+              id: "PROSPECT-" + Date.now().toString().slice(-4),
+              nom: nom || "Contact WhatsApp",
+              tel: tel,
+              dateAjout: new Date().toLocaleDateString('fr-FR'),
+              remarque: "Ajouté depuis la console de diffusion"
+            });
+          }
+        }
+      }
+
+      const cleanTel = nettoyerNumeroMarocain(tel);
+      if (!cleanTel || cleanTel.length < 9) {
+        showToast("Numéro de téléphone invalide (" + tel + "). Format attendu: 06XXXXXXXX ou +2126XXXXXXXX", "error");
+        return;
+      }
+
+      const previewEl = document.getElementById('previewBulleWhatsApp');
+      const messageTexte = previewEl ? previewEl.innerText : "";
+
+      // Incrémenter le compteur d'envois
+      promo.nbEnvoyes = (promo.nbEnvoyes || 0) + 1;
+      saveStore();
+
+      // Construire l'URL WhatsApp
+      const encodedMsg = encodeURIComponent(messageTexte);
+      const waUrl = "https://api.whatsapp.com/send?phone=" + cleanTel + "&text=" + encodedMsg;
+
+      // Ouvrir WhatsApp
+      if (typeof window !== 'undefined') {
+        window.open(waUrl, '_blank');
+      }
+
+      showToast("🚀 Message WhatsApp prêt ! Ouverture de l'application...", "success");
+    }
+
+    function envoyerWhatsAppDirectPatient(patientId) {
+      const patient = CRM_STORE.patients.find(p => p.id === patientId);
+      if (!patient || !patient.tel) {
+        showToast("Numéro de téléphone manquant pour ce patient.", "error");
+        return;
+      }
+
+      // Sélectionner ce patient dans le select
+      const selectPatient = document.getElementById('selectPatientWhatsApp');
+      if (selectPatient) {
+        selectPatient.value = patientId;
+      }
+      basculerModeDestinataire('carnet');
+      envoyerOffreWhatsApp();
+    }
+
+    function copierMessageWhatsApp() {
+      const previewEl = document.getElementById('previewBulleWhatsApp');
+      if (!previewEl) return;
+      const texte = previewEl.innerText;
+      if (navigator && navigator.clipboard) {
+        navigator.clipboard.writeText(texte).then(() => {
+          showToast("📋 Message copié dans le presse-papier !", "success");
+        }).catch(() => {
+          showToast("Texte copié !", "info");
+        });
+      } else {
+        showToast("Texte prêt à être collé !", "info");
+      }
+    }
+
+    function ouvrirModalNouvellePromo(promoId = null) {
+      const modal = document.getElementById('modalNouvellePromo');
+      if (!modal) return;
+
+      const titleEl = document.getElementById('modalPromoTitle');
+      const idInput = document.getElementById('formPromoId');
+      const titreInput = document.getElementById('formPromoTitre');
+      const catSelect = document.getElementById('formPromoCategorie');
+      const valInput = document.getElementById('formPromoValidite');
+      const pNormalInput = document.getElementById('formPromoPrixNormal');
+      const pPromoInput = document.getElementById('formPromoPrixPromo');
+      const descInput = document.getElementById('formPromoDescription');
+      const actifCheck = document.getElementById('formPromoActif');
+
+      if (promoId) {
+        const promo = CRM_STORE.promos.find(p => p.id === promoId);
+        if (promo) {
+          if (titleEl) titleEl.innerText = "✏️ Modifier l'Offre Promotionnelle";
+          if (idInput) idInput.value = promo.id;
+          if (titreInput) titreInput.value = promo.titre;
+          if (catSelect) catSelect.value = promo.categorie;
+          if (valInput) valInput.value = promo.validite;
+          if (pNormalInput) pNormalInput.value = promo.prixNormal;
+          if (pPromoInput) pPromoInput.value = promo.prixPromo;
+          if (descInput) descInput.value = promo.description;
+          if (actifCheck) actifCheck.checked = promo.actif;
+          calculerRemisePromoForm();
+        }
+      } else {
+        if (titleEl) titleEl.innerText = "🎁 Configurer une Offre Promotionnelle";
+        if (idInput) idInput.value = "";
+        if (titreInput) titreInput.value = "";
+        if (valInput) valInput.value = "31/12/2026";
+        if (pNormalInput) pNormalInput.value = "1000";
+        if (pPromoInput) pPromoInput.value = "750";
+        if (descInput) descInput.value = "";
+        if (actifCheck) actifCheck.checked = true;
+        calculerRemisePromoForm();
+      }
+
+      ouvrirModal('modalNouvellePromo');
+    }
+
+    function calculerRemisePromoForm() {
+      const pNormal = parseFloat(document.getElementById('formPromoPrixNormal').value) || 0;
+      const pPromo = parseFloat(document.getElementById('formPromoPrixPromo').value) || 0;
+      const redInput = document.getElementById('formPromoReduction');
+      if (pNormal > 0 && pPromo < pNormal) {
+        const pct = Math.round(((pNormal - pPromo) / pNormal) * 100);
+        if (redInput) redInput.value = '-' + pct + '%';
+      } else {
+        if (redInput) redInput.value = '0%';
+      }
+    }
+
+    function sauvegarderPromoFormulaire(e) {
+      if (e && e.preventDefault) e.preventDefault();
+
+      const promoId = document.getElementById('formPromoId').value;
+      const titre = document.getElementById('formPromoTitre').value.trim();
+      const categorie = document.getElementById('formPromoCategorie').value;
+      const validite = document.getElementById('formPromoValidite').value.trim();
+      const prixNormal = parseFloat(document.getElementById('formPromoPrixNormal').value) || 0;
+      const prixPromo = parseFloat(document.getElementById('formPromoPrixPromo').value) || 0;
+      const reduction = document.getElementById('formPromoReduction').value;
+      const description = document.getElementById('formPromoDescription').value.trim();
+      const actif = document.getElementById('formPromoActif').checked;
+
+      if (!titre || prixNormal <= 0 || prixPromo <= 0) {
+        showToast("Veuillez renseigner le titre et les tarifs de l'offre.", "error");
+        return;
+      }
+
+      if (promoId) {
+        const promo = CRM_STORE.promos.find(p => p.id === promoId);
+        if (promo) {
+          promo.titre = titre;
+          promo.categorie = categorie;
+          promo.validite = validite;
+          promo.prixNormal = prixNormal;
+          promo.prixPromo = prixPromo;
+          promo.reduction = reduction;
+          promo.description = description;
+          promo.actif = actif;
+          showToast("Offre '" + titre + "' mise à jour avec succès !", "success");
+        }
+      } else {
+        const newPromo = {
+          id: "PROMO-" + Date.now().toString().slice(-4),
+          titre: titre,
+          categorie: categorie,
+          prixNormal: prixNormal,
+          prixPromo: prixPromo,
+          reduction: reduction,
+          validite: validite,
+          actif: actif,
+          description: description,
+          nbEnvoyes: 0
+        };
+        CRM_STORE.promos.push(newPromo);
+        showToast("Nouvelle offre '" + titre + "' créée !", "success");
+      }
+
+      saveStore();
+      fermerModal('modalNouvellePromo');
+    }
+
+    function togglePromoStatut(promoId) {
+      const promo = CRM_STORE.promos.find(p => p.id === promoId);
+      if (promo) {
+        promo.actif = !promo.actif;
+        saveStore();
+        showToast("Statut de l'offre modifié : " + (promo.actif ? 'Active' : 'Suspendue'), "info");
+      }
+    }
+
+    function supprimerPromo(promoId) {
+      if (!confirm("Voulez-vous vraiment supprimer cette offre promotionnelle ?")) return;
+      CRM_STORE.promos = CRM_STORE.promos.filter(p => p.id !== promoId);
+      saveStore();
+      showToast("Offre supprimée du catalogue.", "info");
+    }
+
     function navTo(sectionId, btn) {
       document.querySelectorAll('.menu-item-btn').forEach(b => b.classList.remove('active'));
       if (btn) btn.classList.add('active');
@@ -4626,6 +5458,7 @@
         'radar-moteur': isArabic ? 'تقييم الحركية وتراجع الألم' : 'Évolution Motrice (Score EVA)',
         'badges-qr': isArabic ? 'بطاقات المرضى والرمز الذكي' : 'Cartes Patients & QR Code',
         'caisse-forfaits': isArabic ? 'الصندوق وباقات الحصص' : 'Caisse, Forfaits & Krediat',
+        'promos-whatsapp': isArabic ? 'عروض التخفيض وحملات الواتساب' : 'Offres Promotionnelles & Diffusion WhatsApp',
         'stocks-kine': isArabic ? 'زيوت التدليك والمستلزمات' : 'Huiles, Crèmes & Matériel',
         'bilans-recus': isArabic ? 'وصولات التأمين والتقارير' : 'Reçus Mutuelle & Bilans Médecin',
         'cndp-sante': isArabic ? 'السر الطبي وحماية المعطيات' : 'Secret Médical (CNDP 09-08)',
@@ -4716,6 +5549,7 @@
       renderBadgePvcView();
       renderMutuelleRecuView();
       peuplerSelectsPatients();
+      renderPromosView();
         renderScannerButtons();
       } catch (err) {
         console.error('Erreur renderAllViews:', err);
@@ -6251,7 +7085,21 @@
     window.loadStore = loadStore;
     window.saveStore = saveStore;
     window.handleSpotlightSearch = handleSpotlightSearch;
-    window.imprimerLiasseFiscaleA4 = imprimerLiasseFiscaleA4;
+    window.renderPromosView = renderPromosView;
+window.filtrerPromosCategorie = filtrerPromosCategorie;
+window.basculerModeDestinataire = basculerModeDestinataire;
+window.nettoyerNumeroMarocain = nettoyerNumeroMarocain;
+window.selectionnerPromoPourEnvoi = selectionnerPromoPourEnvoi;
+window.actualiserApercuWhatsApp = actualiserApercuWhatsApp;
+window.envoyerOffreWhatsApp = envoyerOffreWhatsApp;
+window.envoyerWhatsAppDirectPatient = envoyerWhatsAppDirectPatient;
+window.copierMessageWhatsApp = copierMessageWhatsApp;
+window.ouvrirModalNouvellePromo = ouvrirModalNouvellePromo;
+window.calculerRemisePromoForm = calculerRemisePromoForm;
+window.sauvegarderPromoFormulaire = sauvegarderPromoFormulaire;
+window.togglePromoStatut = togglePromoStatut;
+window.supprimerPromo = supprimerPromo;
+window.imprimerLiasseFiscaleA4 = imprimerLiasseFiscaleA4;
     window.marquerDeclarationFaite = marquerDeclarationFaite;
     window.telechargerFichierEdiXmlDGI = telechargerFichierEdiXmlDGI;
     window.telechargerLiasseOfficielleDoc = telechargerLiasseOfficielleDoc;
